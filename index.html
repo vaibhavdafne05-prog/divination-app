@@ -146,7 +146,7 @@
         }
         
         .section.active {
-            display: block;
+            display: block !important;
         }
         
         @keyframes fadeIn {
@@ -455,6 +455,106 @@
         .mt-20 { margin-top: 20px; }
         .mb-20 { margin-bottom: 20px; }
         .hidden { display: none; }
+        
+        /* Name Correction Styles */
+        .name-correction-section {
+            margin: 20px 0;
+        }
+        
+        .current-analysis {
+            background: linear-gradient(135deg, #E8F4FD 0%, #B8E6B8 100%);
+            padding: 20px;
+            border-radius: 16px;
+            margin: 20px 0;
+            border-left: 6px solid #2196F3;
+        }
+        
+        .current-analysis h3 {
+            color: #1565C0;
+            margin-bottom: 16px;
+            font-size: 20px;
+        }
+        
+        .suggestions-container {
+            background: linear-gradient(135deg, #F3E5F5 0%, #E1BEE7 100%);
+            padding: 24px;
+            border-radius: 16px;
+            margin: 20px 0;
+            border-left: 6px solid #9C27B0;
+        }
+        
+        .suggestions-container h3 {
+            color: #7B1FA2;
+            margin-bottom: 20px;
+            font-size: 22px;
+        }
+        
+        .goal-section {
+            margin-bottom: 24px;
+        }
+        
+        .goal-section h4 {
+            color: #6A1B9A;
+            margin-bottom: 16px;
+            font-size: 18px;
+        }
+        
+        .variation-card {
+            background: white;
+            padding: 16px;
+            border-radius: 12px;
+            margin: 12px 0;
+            border: 2px solid #E1BEE7;
+            transition: all 0.3s;
+        }
+        
+        .variation-card:hover {
+            border-color: #9C27B0;
+            box-shadow: 0 4px 15px rgba(156, 39, 176, 0.2);
+        }
+        
+        .variation-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+        
+        .variation-header strong {
+            color: #7B1FA2;
+            font-size: 16px;
+        }
+        
+        .badge {
+            background: #9C27B0;
+            color: white;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+        
+        .variation-body p {
+            color: #374151;
+            margin: 8px 0;
+            font-size: 14px;
+        }
+        
+        .benefits {
+            margin-top: 12px;
+        }
+        
+        .benefits ul {
+            margin: 8px 0 0 20px;
+            padding: 0;
+        }
+        
+        .benefits li {
+            color: #2E7D32;
+            font-size: 13px;
+            line-height: 1.5;
+            margin: 4px 0;
+        }
 
 
 
@@ -478,29 +578,22 @@
     <!-- HOME SECTION -->
     <div id="home" class="section active">
         <div class="card">
-            <h2>🌙 Today's Cosmic Energy</h2>
+            <h2>🌟 Today's Energy</h2>
             <p style="text-align: center; color: #666; margin-bottom: 16px;">
-                Tuesday, October 21, 2025
+                <span id="current-date">Loading...</span>
             </p>
             <div class="info-box">
-                <p><strong>Current Moon Phase:</strong> Waxing Crescent in Sagittarius</p>
-                <p><strong>Lunar Energy:</strong> Growth, optimism, and exploration</p>
-                <p><strong>Today's Focus:</strong> Take inspired action on your dreams</p>
-            </div>
-            <div class="quick-stats">
-                <div class="stat-box">
-                    <div class="stat-label">Moon Phase</div>
-                    <div class="stat-value">🌒 Waxing</div>
-                </div>
-                <div class="stat-box">
-                    <div class="stat-label">Lunar Sign</div>
-                    <div class="stat-value">♐ Sagittarius</div>
-                </div>
+                <p><strong>Day:</strong> <span id="indian-day">Loading...</span></p>
+                <p><strong>Moon Phase:</strong> <span id="moon-phase">Loading...</span></p>
+                <p><strong>Cosmic Guidance:</strong> The universe supports your intentions today. Trust your intuition and take inspired action.</p>
             </div>
         </div>
         
         <div class="card">
-            <h2>✨ Explore Your Path</h2>
+            <h2>✨ Divination Tools</h2>
+            <p style="text-align: center; margin-bottom: 20px;">
+                Choose your path to divine wisdom
+            </p>
             <div class="btn-group">
                 <button class="btn" onclick="showTab('tarot')">🎴 Tarot Wisdom</button>
                 <button class="btn btn-secondary" onclick="showTab('numerology')">🔢 Sacred Numbers</button>
@@ -589,7 +682,7 @@
         </div>
         
         <div id="numerology-name-correction" class="card hidden">
-            <h2>✨ Name Correction & Optimization</h2>
+            <h2>✨ Name Correction &amp; Optimization</h2>
             <div id="name-correction-output"></div>
         </div>
     </div>
@@ -699,38 +792,65 @@
 
 <!-- Bottom Navigation -->
 <div class="nav-tabs">
-    <button class="nav-tab" onclick="showTab('tarot')">
+    <button class="nav-tab active" data-tab="home" onclick="showTab('home')">
+        <span class="icon">🏠</span>
+        <span>Home</span>
+    </button>
+    <button class="nav-tab" data-tab="tarot" onclick="showTab('tarot')">
         <span class="icon">🎴</span>
         <span>Tarot</span>
     </button>
-    <button class="nav-tab" onclick="showTab('numerology')">
+    <button class="nav-tab" data-tab="numerology" onclick="showTab('numerology')">
         <span class="icon">🔢</span>
-        <span>Numerology</span>
+        <span>Numbers</span>
     </button>
-    <button class="nav-tab" onclick="showTab('moonology')">
+    <button class="nav-tab" data-tab="moonology" onclick="showTab('moonology')">
         <span class="icon">🌙</span>
-        <span>Moonology</span>
+        <span>Moon</span>
     </button>
-    <button class="nav-tab" onclick="showTab('kali')">
+    <button class="nav-tab" data-tab="kali" onclick="showTab('kali')">
         <span class="icon">🗡️</span>
-        <span>Kali Oracle</span>
+        <span>Kali</span>
     </button>
 </div>
 
 <script>
 // Navigation
 function showTab(tabName) {
-    // Hide all sections
-    document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+    console.log('Switching to tab:', tabName);
     
-    // Remove active from nav tabs
-    document.querySelectorAll('.nav-tab').forEach(btn => btn.classList.remove('active'));
+    // Hide all sections
+    const sections = document.querySelectorAll('.section');
+    sections.forEach(section => {
+        section.classList.remove('active');
+        section.style.display = 'none';
+    });
     
     // Show selected section
-    document.getElementById(tabName).classList.add('active');
+    const targetSection = document.getElementById(tabName);
+    if (targetSection) {
+        targetSection.classList.add('active');
+        targetSection.style.display = 'block';
+    } else {
+        console.error('Section not found:', tabName);
+    }
     
-    // Highlight active tab
-    event.target.closest('.nav-tab').classList.add('active');
+    // Remove active class from all nav buttons
+    const navButtons = document.querySelectorAll('.nav-tab');
+    navButtons.forEach(btn => {
+        btn.classList.remove('active');
+    });
+    
+    // Add active class to clicked button
+    const activeButton = document.querySelector(`[data-tab="${tabName}"]`);
+    if (activeButton) {
+        activeButton.classList.add('active');
+    }
+    
+    // Update home page if switching to home
+    if (tabName === 'home') {
+        updateHomePage();
+    }
     
     // Scroll to top
     window.scrollTo({top: 0, behavior: 'smooth'});
@@ -1832,6 +1952,348 @@ function showNumberDetail(type, number) {
 
 // NAME CORRECTION & OPTIMIZATION SYSTEM
 
+// ----------- DYNAMIC NAME SUGGESTION SYSTEM BEGIN -----------
+// === [NEW DYNAMIC NAME CORRECTION: replace static with dynamic suggestion system] ===
+
+function generateDynamicNameSuggestions(name, lifePath) {
+    const suggestions = [];
+    const currentExpression = calculateExpression(name);
+    
+    // Target numbers for different goals
+    const goalTargets = {
+        wealth: 8,
+        success: 1,
+        creativity: 3,
+        spirituality: 7,
+        love: 6,
+        power: 8,
+        harmony: 2
+    };
+    
+    // Generate suggestions for each goal
+    for (let goal in goalTargets) {
+        const target = goalTargets[goal];
+        
+        // Skip if already at target
+        if (currentExpression === target) continue;
+        
+        // Try different modification strategies
+        const variations = [];
+        
+        // Strategy 1: Add single letters
+        variations.push(...tryAddingLetters(name, target));
+        
+        // Strategy 2: Change spelling
+        variations.push(...trySpellingVariations(name, target));
+        
+        // Strategy 3: Add middle name/initial
+        variations.push(...tryMiddleNameAddition(name, target));
+        
+        // Strategy 4: Double letters
+        variations.push(...tryDoublingLetters(name, target));
+        
+        if (variations.length > 0) {
+            suggestions.push({
+                goal: goal,
+                target: target,
+                variations: variations.slice(0, 3) // Top 3 for each goal
+            });
+        }
+    }
+    
+    return suggestions;
+}
+
+// Try adding single letters to reach target
+function tryAddingLetters(name, target) {
+    const results = [];
+    const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    const parts = name.split(' ');
+    
+    // Try adding to first name
+    for (let letter of letters) {
+        const newName = parts[0] + letter + (parts[1] ? ' ' + parts[1] : '');
+        if (calculateExpression(newName) === target) {
+            results.push({
+                name: newName,
+                change: `Add "${letter}" to first name`,
+                method: 'addition',
+                effort: 'Low',
+                expression: target
+            });
+            if (results.length >= 3) break;
+        }
+    }
+    
+    // Try adding middle initial
+    if (parts.length === 2) {
+        for (let letter of letters) {
+            const newName = parts[0] + ' ' + letter + ' ' + parts[1];
+            if (calculateExpression(newName) === target) {
+                results.push({
+                    name: newName,
+                    change: `Add middle initial "${letter}"`,
+                    method: 'middle-initial',
+                    effort: 'Low',
+                    expression: target
+                });
+                if (results.length >= 3) break;
+            }
+        }
+    }
+    
+    return results;
+}
+
+// Try spelling variations
+function trySpellingVariations(name, target) {
+    const results = [];
+    const parts = name.split(' ');
+    const firstName = parts[0];
+    
+    // Common letter substitutions
+    const substitutions = {
+        'A': ['AA', 'E'],
+        'E': ['EE', 'I'],
+        'I': ['Y', 'EE'],
+        'O': ['OO', 'U'],
+        'U': ['OO'],
+        'C': ['K', 'S'],
+        'K': ['C'],
+        'S': ['Z', 'C'],
+        'V': ['W'],
+        'W': ['V'],
+        'F': ['PH'],
+        'PH': ['F']
+    };
+    
+    // Try substituting each letter
+    for (let i = 0; i < firstName.length; i++) {
+        const letter = firstName[i].toUpperCase();
+        
+        if (substitutions[letter]) {
+            for (let replacement of substitutions[letter]) {
+                const newFirst = firstName.substring(0, i) + 
+                                replacement + 
+                                firstName.substring(i + 1);
+                const newName = newFirst + (parts[1] ? ' ' + parts[1] : '');
+                
+                if (calculateExpression(newName) === target) {
+                    results.push({
+                        name: newName,
+                        change: `Change "${letter}" to "${replacement}"`,
+                        method: 'spelling',
+                        effort: 'Low',
+                        expression: target
+                    });
+                    if (results.length >= 3) return results;
+                }
+            }
+        }
+    }
+    
+    return results;
+}
+
+// Try adding middle name
+function tryMiddleNameAddition(name, target) {
+    const results = [];
+    const parts = name.split(' ');
+    
+    // Common middle names with different vibrations
+    const middleNames = [
+        'Kumar', 'Singh', 'Raj', 'Dev', 'Krishna', 'Ram',
+        'Anand', 'Prasad', 'Sharma', 'Patel', 'Shah'
+    ];
+    
+    for (let middle of middleNames) {
+        const newName = parts[0] + ' ' + middle + (parts[1] ? ' ' + parts[1] : '');
+        if (calculateExpression(newName) === target) {
+            results.push({
+                name: newName,
+                change: `Add middle name "${middle}"`,
+                method: 'middle-name',
+                effort: 'Medium',
+                expression: target
+            });
+            if (results.length >= 2) break;
+        }
+    }
+    
+    return results;
+}
+
+// Try doubling letters for emphasis
+function tryDoublingLetters(name, target) {
+    const results = [];
+    const parts = name.split(' ');
+    const firstName = parts[0];
+    
+    // Try doubling each letter
+    for (let i = 0; i < firstName.length; i++) {
+        const doubled = firstName.substring(0, i + 1) + 
+                       firstName[i] + 
+                       firstName.substring(i + 1);
+        const newName = doubled + (parts[1] ? ' ' + parts[1] : '');
+        
+        if (calculateExpression(newName) === target) {
+            results.push({
+                name: newName,
+                change: `Double letter "${firstName[i]}"`,
+                method: 'doubling',
+                effort: 'Low',
+                expression: target
+            });
+            if (results.length >= 2) break;
+        }
+    }
+    
+    return results;
+}
+
+// Main correction function that displays results
+function displayNameCorrections(name, lifePath) {
+    const suggestions = generateDynamicNameSuggestions(name, lifePath);
+    const currentExpression = calculateExpression(name);
+    
+    let html = '<div class="name-correction-section">';
+    
+    // Current name analysis
+    html += `
+        <div class="current-analysis">
+            <h3>📊 Your Current Name</h3>
+            <p><strong>Name:</strong> ${name}</p>
+            <p><strong>Expression Number:</strong> ${currentExpression}</p>
+            <p><strong>Life Path Number:</strong> ${lifePath}</p>
+            <p><strong>Alignment:</strong> ${checkSimpleAlignment(currentExpression, lifePath)}</p>
+        </div>
+    `;
+    
+    // Show suggestions grouped by goal
+    if (suggestions.length > 0) {
+        html += '<div class="suggestions-container">';
+        html += '<h3>💡 Name Optimization Suggestions</h3>';
+        
+        for (let suggestion of suggestions) {
+            if (suggestion.variations.length === 0) continue;
+            
+            html += `
+                <div class="goal-section">
+                    <h4>🎯 For ${capitalizeGoal(suggestion.goal)} (Target: ${suggestion.target})</h4>
+            `;
+            
+            for (let variation of suggestion.variations) {
+                html += generateVariationCard(variation, suggestion.goal);
+            }
+            
+            html += '</div>';
+        }
+        
+        html += '</div>';
+    } else {
+        html += `
+            <div class="info-box">
+                <p>✅ Your name is already well-optimized! No major corrections needed.</p>
+                <p>Consider minor spelling variations or middle initials for fine-tuning.</p>
+            </div>
+        `;
+    }
+    
+    html += '</div>';
+    
+    return html;
+}
+
+// Generate card for each variation
+function generateVariationCard(variation, goal) {
+    const benefits = getBenefitsForGoal(goal);
+    
+    return `
+        <div class="variation-card">
+            <div class="variation-header">
+                <strong>${variation.name}</strong>
+                <span class="badge">Expression: ${variation.expression}</span>
+            </div>
+            <div class="variation-body">
+                <p><strong>Change:</strong> ${variation.change}</p>
+                <p><strong>Method:</strong> ${variation.method}</p>
+                <p><strong>Effort:</strong> ${variation.effort}</p>
+                <div class="benefits">
+                    <strong>Benefits:</strong>
+                    <ul>
+                        ${benefits.map(b => `<li>${b}</li>`).join('')}
+                    </ul>
+                </div>
+            </div>
+        </div>
+    `;
+}
+
+// Get benefits based on goal
+function getBenefitsForGoal(goal) {
+    const benefitsMap = {
+        wealth: [
+            'Enhanced money manifestation',
+            'Business success and authority',
+            'Material abundance',
+            'Financial opportunities'
+        ],
+        success: [
+            'Leadership abilities',
+            'Independence and confidence',
+            'Goal achievement',
+            'Recognition and respect'
+        ],
+        creativity: [
+            'Enhanced self-expression',
+            'Artistic talents awakened',
+            'Better communication',
+            'Joy and social success'
+        ],
+        spirituality: [
+            'Heightened intuition',
+            'Spiritual wisdom',
+            'Inner guidance strengthened',
+            'Mystical experiences'
+        ],
+        love: [
+            'Harmonious relationships',
+            'Emotional balance',
+            'Attracting love',
+            'Nurturing energy'
+        ],
+        power: [
+            'Authority and influence',
+            'Executive abilities',
+            'Strong presence',
+            'Command respect'
+        ],
+        harmony: [
+            'Peace and balance',
+            'Diplomatic skills',
+            'Cooperative energy',
+            'Emotional sensitivity'
+        ]
+    };
+    
+    return benefitsMap[goal] || ['Positive energy shift'];
+}
+
+function checkSimpleAlignment(expression, lifePath) {
+    if (expression === lifePath) {
+        return '✅ Perfect alignment - name supports life path!';
+    } else if (Math.abs(expression - lifePath) <= 2) {
+        return '⚠️ Good but can be optimized';
+    } else {
+        return '❌ Misaligned - correction recommended';
+    }
+}
+
+function capitalizeGoal(goal) {
+    return goal.charAt(0).toUpperCase() + goal.slice(1);
+}
+// ----------- DYNAMIC NAME SUGGESTION SYSTEM END -----------
+
 // Analyze current name vibration and identify issues
 function analyzeNameVibration(birthName, currentName, lifePath) {
     const currentExpression = calculateExpression(currentName || birthName);
@@ -2185,19 +2647,18 @@ function generateGoalSpecificName(name, goal) {
     };
 }
 
-// Main name correction display function
+// === NEW DYNAMIC NAME CORRECTION ===
+// Main name correction display function - Updated to use dynamic system
 function displayNameCorrection(numbers, currentNumbers) {
     const birthName = numbers.name;
     const currentName = currentNumbers ? currentNumbers.name : null;
     const nameToAnalyze = currentName || birthName;
-    
-    // Analyze current name vibration
-    const analysis = analyzeNameVibration(birthName, nameToAnalyze, numbers.lifePath);
-    
-    // Generate suggestions for different goals
-    const wealthSuggestions = generateGoalSpecificName(nameToAnalyze, 'wealth');
-    const successSuggestions = generateGoalSpecificName(nameToAnalyze, 'success');
-    const spiritualSuggestions = generateGoalSpecificName(nameToAnalyze, 'spirituality');
+
+    // Use NEW DYNAMIC NAME SUGGESTION LOGIC
+    const html = displayNameCorrections(nameToAnalyze, numbers.lifePath);
+    document.getElementById('name-correction-output').innerHTML = html;
+}
+
     
     let html = `
         <div style="background: linear-gradient(135deg, #E8F4FD 0%, #B8E6B8 100%); padding: 24px; border-radius: 16px; margin: 20px 0; border-left: 6px solid #2196F3;">
@@ -2421,7 +2882,7 @@ function createImplementationGuide() {
     
     html += '<div style="background: linear-gradient(135deg, #FFFBEB 0%, #FEF3C7 100%); padding: 20px; border-radius: 16px; margin: 20px 0; border-left: 6px solid #F59E0B; text-align: center;">';
     html += '<h4 style="color: #D97706; margin-bottom: 12px; font-size: 18px;">⚖️ Legal Considerations</h4>';
-    html += '<p style="color: #92400E; line-height: 1.6; margin: 0; font-size: 14px;">Minor spelling changes don\'t require legal name change. You can use professionally without legal change. Signature name has numerological power regardless of legal status. Legal change strengthens the effect but is not mandatory.</p>';
+    html += '<p style="color: #92400E; line-height: 1.6; margin: 0; font-size: 14px;">Minor spelling changes do not require legal name change. You can use professionally without legal change. Signature name has numerological power regardless of legal status. Legal change strengthens the effect but is not mandatory.</p>';
     html += '</div>';
     
     return html;
@@ -2932,31 +3393,7 @@ function createCareerSpread(cards) {
     `;
 }
 
-// Yes/No Spread
-function createYesNoSpread(card) {
-    // Determine yes/no based on card suit and number
-    const isYes = ['Major', 'Cups', 'Wands'].includes(card.suit) || 
-                  (card.suit === 'Pentacles' && card.id % 2 === 0) ||
-                  (card.suit === 'Swords' && card.id % 2 === 1);
-    
-    const answer = isYes ? 'YES' : 'NO';
-    const answerColor = isYes ? '#228B22' : '#DC143C';
-    const answerEmoji = isYes ? '✅' : '❌';
-    
-    return `
-        <h3 class="text-center mb-20">❓ Yes/No Reading</h3>
-        <div class="text-center" style="padding: 32px; background: linear-gradient(135deg, #F0F8FF 0%, #E6E6FA 100%); border-radius: 20px; margin: 20px 0;">
-            <div style="font-size: 80px; margin: 20px 0;">${answerEmoji}</div>
-            <div style="font-size: 48px; font-weight: bold; color: ${answerColor}; margin: 16px 0;">${answer}</div>
-            <div style="font-size: 60px; margin: 20px 0;">${card.symbol}</div>
-            <div style="font-size: 24px; font-weight: 600; margin: 12px 0;">${card.name}</div>
-        </div>
-        <div class="info-box">
-            <p><strong>Guidance:</strong> ${card.meaning}</p>
-            <p><strong>Additional Insight:</strong> ${card.upright}</p>
-        </div>
-    `;
-}
+
 
 // Old drawTarot function for backwards compatibility
 function drawTarot(spreadType) {
@@ -3585,40 +4022,26 @@ function analyzeTrajectory(past, present, future) {
     return 'Your path shows transformation and change. Neither purely positive nor negative, but rich with learning. Embrace the journey.';
 }
 
-// Update showTab function to handle new navigation
-function showTab(tabName) {
-    // Handle home navigation
-    if (tabName === 'home') {
-        // Show home section
-        document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
-        document.getElementById('home').classList.add('active');
-        
-        // Remove active from all nav tabs (no home tab in bottom nav)
-        document.querySelectorAll('.nav-tab').forEach(btn => btn.classList.remove('active'));
-    } else {
-        // Hide all sections
-        document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
-        
-        // Remove active from nav tabs
-        document.querySelectorAll('.nav-tab').forEach(btn => btn.classList.remove('active'));
-        
-        // Show selected section
-        document.getElementById(tabName).classList.add('active');
-        
-        // Highlight active tab if clicked from navigation
-        if (event && event.target) {
-            event.target.closest('.nav-tab').classList.add('active');
-        }
-    }
-    
-    // Scroll to top
-    window.scrollTo({top: 0, behavior: 'smooth'});
-}
 
-// Auto-activate first tab on load
-document.addEventListener('DOMContentLoaded', function() {
-    // Show tarot as default active tab
-    document.querySelector('.nav-tab').classList.add('active');
+
+// Initialize app on load
+window.addEventListener('DOMContentLoaded', function() {
+    console.log('App loaded');
+    console.log('Sections found:', document.querySelectorAll('.section').length);
+    console.log('Nav buttons found:', document.querySelectorAll('.nav-tab').length);
+    
+    // Initialize home page
+    updateHomePage();
+    
+    // Update every minute to keep accurate
+    setInterval(updateHomePage, 60000);
+    
+    // Make showTab globally available
+    window.showTab = showTab;
+    
+    // Test basic functionality
+    console.log('Testing showTab function:', typeof showTab);
+    console.log('Testing updateHomePage function:', typeof updateHomePage);
 });
 
 // COMPLETE KALI ORACLE SYSTEM - 44 CARDS OF FIERCE WISDOM
@@ -3958,7 +4381,82 @@ function createWarriorPathSpread(cards) {
     `;
 }
 
-console.log('✨ Mystic Divination App with Kali Oracle - Tarot, Numerology, Moonology & Fierce Divine Feminine Wisdom Ready');
+// DYNAMIC DATE SYSTEM
+
+// Get current date dynamically
+function getCurrentDate() {
+    const now = new Date();
+    const options = { 
+        weekday: 'long', 
+        year: 'numeric', 
+        month: 'long', 
+        day: 'numeric' 
+    };
+    return now.toLocaleDateString('en-US', options);
+}
+
+// Get current moon phase (approximate)
+function getCurrentMoonPhase() {
+    const now = new Date();
+    const year = now.getFullYear();
+    const month = now.getMonth() + 1;
+    const day = now.getDate();
+    
+    // Simplified moon phase calculation
+    // Based on lunar cycle of ~29.53 days
+    const knownNewMoon = new Date('2025-01-29'); // Known new moon date
+    const daysSinceNewMoon = Math.floor((now - knownNewMoon) / (1000 * 60 * 60 * 24));
+    const lunarCycle = 29.53;
+    const phase = (daysSinceNewMoon % lunarCycle) / lunarCycle;
+    
+    if (phase < 0.03 || phase > 0.97) return { name: 'New Moon', emoji: '🌑' };
+    if (phase < 0.22) return { name: 'Waxing Crescent', emoji: '🌒' };
+    if (phase < 0.28) return { name: 'First Quarter', emoji: '🌓' };
+    if (phase < 0.47) return { name: 'Waxing Gibbous', emoji: '🌔' };
+    if (phase < 0.53) return { name: 'Full Moon', emoji: '🌕' };
+    if (phase < 0.72) return { name: 'Waning Gibbous', emoji: '🌖' };
+    if (phase < 0.78) return { name: 'Last Quarter', emoji: '🌗' };
+    return { name: 'Waning Crescent', emoji: '🌘' };
+}
+
+// Get current day of week
+function getCurrentDay() {
+    const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+    return days[new Date().getDay()];
+}
+
+// Get Indian day name (Vara)
+function getIndianDayName() {
+    const varas = ['Ravivar', 'Somvar', 'Mangalvar', 'Budhvar', 'Guruvar', 'Shukravar', 'Shanivar'];
+    return varas[new Date().getDay()];
+}
+
+// Update the home page with current date
+function updateHomePage() {
+    const currentDate = getCurrentDate();
+    const moonPhase = getCurrentMoonPhase();
+    const indianDay = getIndianDayName();
+    
+    // Update date display
+    const dateElement = document.getElementById('current-date');
+    if (dateElement) {
+        dateElement.textContent = currentDate;
+    }
+    
+    // Update moon phase
+    const moonElement = document.getElementById('moon-phase');
+    if (moonElement) {
+        moonElement.innerHTML = `${moonPhase.emoji} ${moonPhase.name}`;
+    }
+    
+    // Update Indian day
+    const dayElement = document.getElementById('indian-day');
+    if (dayElement) {
+        dayElement.textContent = `${indianDay} (${getCurrentDay()})`;
+    }
+}
+
+console.log('✨ Complete Mystic Divination App with Dynamic Date System - Ready!');
 </script>
 
 </body>
@@ -4045,6 +4543,6 @@ console.log('✨ Mystic Divination App with Kali Oracle - Tarot, Numerology, Moo
 
 
 
-    </script>
+</script>
 </body>
 </html>
