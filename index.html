@@ -3,2730 +3,621 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>✨ Mystic Divination - Complete Oracle System ✨</title>
+    <title>Mystic Divination - Oracle Platform</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&family=Inter:wght@300;400;500;600&display=swap');
-        
-        :root {
-            --color-primary: #1a0033;
-            --color-secondary: #2d1b4e;
-            --color-accent: #ffd700;
-            --color-midnight: #0a0e27;
-            --color-orange: linear-gradient(135deg, #ff6b35, #f7931e, #ffd700);
-            --color-purple-dark: #1a0033;
-            --color-purple-medium: #2d1b4e;
-            --color-purple-light: #4a3066;
-            --color-text-light: #e6d9f0;
-            --color-text-accent: #ffd700;
-            --color-card-bg: rgba(45, 27, 78, 0.8);
-            --color-card-border: rgba(255, 215, 0, 0.3);
-            --font-mystical: 'Cinzel', serif;
-            --font-modern: 'Inter', sans-serif;
-            --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            --shadow-mystical: 0 8px 32px rgba(255, 215, 0, 0.1), 0 4px 16px rgba(26, 0, 51, 0.4);
-            --shadow-glow: 0 0 20px rgba(255, 215, 0, 0.3);
-        }
-        
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
-        
+
         body {
-            font-family: var(--font-modern);
-            background: linear-gradient(135deg, var(--color-midnight) 0%, var(--color-primary) 50%, var(--color-secondary) 100%);
-            background-attachment: fixed;
-            color: var(--color-text-light);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
-            overflow-x: hidden;
-            padding-top: 55px;
         }
-        
-        html {
-            scroll-padding-top: 55px;
-        }
-        
-        body::before {
-            content: '';
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background-image: 
-                radial-gradient(2px 2px at 20px 30px, var(--color-accent), transparent),
-                radial-gradient(2px 2px at 40px 70px, rgba(255, 255, 255, 0.8), transparent),
-                radial-gradient(1px 1px at 90px 40px, var(--color-accent), transparent),
-                radial-gradient(1px 1px at 130px 80px, rgba(255, 255, 255, 0.6), transparent),
-                radial-gradient(2px 2px at 160px 30px, var(--color-accent), transparent);
-            background-repeat: repeat;
-            background-size: 200px 100px;
-            animation: sparkle 20s linear infinite;
-            opacity: 0.6;
-            z-index: -1;
-        }
-        
-        @keyframes sparkle {
-            0% { transform: translateY(0); }
-            100% { transform: translateY(-100px); }
-        }
-        
-        /* Enhanced Shuffle Animation */
-        @keyframes cardShuffle {
-            0% {
-                transform: translateX(-100px) translateY(-50px) rotate(0deg) scale(0.8);
-                opacity: 0;
-            }
-            25% {
-                transform: translateX(50px) translateY(-100px) rotate(180deg) scale(1);
-                opacity: 0.7;
-            }
-            50% {
-                transform: translateX(-50px) translateY(50px) rotate(360deg) scale(1.1);
-                opacity: 1;
-            }
-            75% {
-                transform: translateX(100px) translateY(-25px) rotate(540deg) scale(0.9);
-                opacity: 0.8;
-            }
-            100% {
-                transform: translateX(0) translateY(0) rotate(720deg) scale(1);
-                opacity: 0;
-            }
-        }
-        
-        @keyframes pulse {
-            0%, 100% { opacity: 1; transform: scale(1); }
-            50% { opacity: 0.7; transform: scale(1.05); }
-        }
-        
-        @keyframes flipCard {
-            0% { transform: rotateY(0deg); }
-            50% { transform: rotateY(-90deg); }
-            100% { transform: rotateY(0deg); }
-        }
-        
-        .shuffle-animation {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 1000;
-            background: rgba(26, 0, 51, 0.9);
+
+        /* Login Page Styles */
+        .login-container {
             display: flex;
-            flex-direction: column;
             justify-content: center;
             align-items: center;
-            pointer-events: none;
+            min-height: 100vh;
+            padding: 20px;
         }
-        
-        .shuffle-card {
-            position: absolute;
-            width: 60px;
-            height: 90px;
-            background: linear-gradient(135deg, #2d1b4e, #4a3066);
-            border: 2px solid var(--color-accent);
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.5rem;
-            color: var(--color-accent);
-            box-shadow: 0 4px 20px rgba(255, 215, 0, 0.3);
-        }
-        
-        .shuffle-text {
-            font-family: var(--font-mystical);
-            font-size: 2rem;
-            color: var(--color-accent);
-            text-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
-            animation: pulse 1s ease-in-out infinite;
-            margin-bottom: 2rem;
-        }
-        
-        /* Manual Card Draw Styles */
-        .draw-mode-selector {
-            display: flex;
-            gap: 0.5rem;
-            margin: 1rem 0;
-            justify-content: center;
-            align-items: center;
-        }
-        
-        .draw-mode-toggle {
-            padding: 0.5rem 1rem;
-            background: rgba(45, 27, 78, 0.6);
-            border: 1px solid var(--color-card-border);
+
+        .login-box {
+            background: white;
+            padding: 40px;
             border-radius: 20px;
-            color: var(--color-text-light);
-            cursor: pointer;
-            transition: var(--transition-smooth);
-            font-size: 0.9rem;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            width: 100%;
+            max-width: 400px;
         }
-        
-        .draw-mode-toggle.active {
-            background: var(--color-accent);
-            color: var(--color-primary);
+
+        .login-box h1 {
+            text-align: center;
+            color: #667eea;
+            margin-bottom: 10px;
+            font-size: 28px;
+        }
+
+        .login-box p {
+            text-align: center;
+            color: #666;
+            margin-bottom: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
             font-weight: 500;
         }
-        
-        .card-deck-container {
-            display: none;
-            grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
-            gap: 1rem;
-            max-width: 800px;
-            margin: 2rem auto;
-            padding: 2rem;
-            background: rgba(26, 0, 51, 0.3);
-            border-radius: 15px;
-            border: 1px solid var(--color-card-border);
-        }
-        
-        .card-deck-container.active {
-            display: grid;
-        }
-        
-        .deck-card {
-            width: 80px;
-            height: 120px;
-            background: linear-gradient(135deg, #2d1b4e, #4a3066);
-            border: 2px solid var(--color-card-border);
+
+        .form-group input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
             border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.5rem;
-            color: var(--color-accent);
-            cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            position: relative;
-            overflow: hidden;
+            font-size: 16px;
+            transition: border 0.3s;
         }
-        
-        .deck-card::before {
-            content: '✨';
-            position: absolute;
-            font-size: 2rem;
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #667eea;
         }
-        
-        .moonology-deck-card::before {
-            content: '🌙';
-        }
-        
-        .kali-deck-card::before {
-            content: '🔥';
-        }
-        
-        .moonology-deck-card {
-            background: linear-gradient(135deg, #2d1b4e, #4a3066);
-            border-color: #50b4c8;
-        }
-        
-        .moonology-deck-card:hover {
-            border-color: #50b4c8;
-            box-shadow: 0 10px 30px rgba(80, 180, 200, 0.4);
-        }
-        
-        .moonology-deck-card.selected {
-            background: linear-gradient(135deg, #50b4c8, #2d9cdb, #74b9ff);
-            border-color: #50b4c8;
-        }
-        
-        .kali-deck-card {
-            background: linear-gradient(135deg, #8b0000, #a52a2a);
-            border-color: #dc143c;
-        }
-        
-        .kali-deck-card:hover {
-            border-color: #dc143c;
-            box-shadow: 0 10px 30px rgba(220, 20, 60, 0.4);
-        }
-        
-        .kali-deck-card.selected {
-            background: linear-gradient(135deg, #dc143c, #ff6b6b, #ff4757);
-            border-color: #dc143c;
-        }
-        
-        .deck-card:hover {
-            transform: translateY(-10px) scale(1.05);
-            box-shadow: 0 10px 30px rgba(255, 215, 0, 0.4);
-            border-color: var(--color-accent);
-        }
-        
-        .deck-card.selected {
-            background: linear-gradient(135deg, #ff6b35, #f7931e, #ffd700);
-            color: var(--color-primary);
-            border-color: var(--color-accent);
-            transform: scale(1.1);
-            box-shadow: 0 8px 25px rgba(255, 215, 0, 0.6);
-            animation: flipCard 0.6s ease-in-out;
-        }
-        
-        .deck-card.selected::before {
-            content: '✓';
-            font-size: 2rem;
-            font-weight: bold;
-        }
-        
-        .selection-info {
-            text-align: center;
-            margin: 1rem 0;
-            font-family: var(--font-mystical);
-            color: var(--color-accent);
-            font-size: 1.1rem;
-        }
-        
-        .selection-counter {
-            font-size: 1.2rem;
+
+        .login-btn {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
             font-weight: 600;
-            color: var(--color-text-accent);
-            margin: 0.5rem 0;
+            cursor: pointer;
+            transition: transform 0.2s;
         }
-        
-        .reveal-btn {
+
+        .login-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .demo-accounts {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #e0e0e0;
+        }
+
+        .demo-accounts h3 {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 10px;
+        }
+
+        .demo-accounts p {
+            font-size: 12px;
+            color: #999;
+            margin: 5px 0;
+            text-align: left;
+        }
+
+        /* App Styles */
+        .app-container {
             display: none;
-            margin: 1rem auto;
-            padding: 1rem 2rem;
-            background: linear-gradient(45deg, var(--color-accent), #ffed4a);
-            color: var(--color-primary);
-            border: 2px solid var(--color-accent);
-            border-radius: 25px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: var(--transition-smooth);
-            font-family: var(--font-mystical);
-            font-size: 1.1rem;
-            animation: glow 2s ease-in-out infinite alternate;
-        }
-        
-        .reveal-btn.active {
-            display: block;
-        }
-        
-        .manual-draw-instructions {
-            text-align: center;
-            color: var(--color-text-light);
-            font-style: italic;
-            margin: 1rem 0;
-            opacity: 0.8;
-        }
-        
-        .header {
-            background: var(--color-orange);
-            padding: 10px 15px;
-            border-bottom: 3px solid rgba(255, 215, 0, 0.5);
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-        }
-        
-        .nav-container {
             max-width: 1200px;
             margin: 0 auto;
-            padding: 0 2rem;
+            padding: 20px;
+        }
+
+        .app-header {
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .app-header h1 {
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+
+        .user-info {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            flex-wrap: wrap;
-            gap: 1rem;
+            margin-top: 15px;
         }
-        
-        .logo {
-            font-family: var(--font-mystical);
-            font-size: 18px;
-            font-weight: 600;
+
+        .logout-btn {
+            padding: 8px 20px;
+            background: #ff6b6b;
             color: white;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-            animation: glow 2s ease-in-out infinite alternate;
-        }
-        
-        .logo::after {
-            content: ' - Your Complete Oracle System';
-            font-size: 11px;
-            font-weight: 400;
-            opacity: 0.8;
-            display: block;
-            font-family: var(--font-modern);
-        }
-        
-        @keyframes glow {
-            from { text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); }
-            to { text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5), 0 0 20px rgba(255, 255, 255, 0.3); }
-        }
-        
-        .nav-buttons {
-            display: flex;
-            gap: 0.5rem;
-            flex-wrap: wrap;
-        }
-        
-        .nav-btn {
-            padding: 0.8rem 1.5rem;
-            background: rgba(255, 255, 255, 0.2);
-            border: 2px solid rgba(255, 255, 255, 0.3);
-            border-radius: 25px;
-            color: white;
-            font-weight: 500;
+            border: none;
+            border-radius: 6px;
             cursor: pointer;
-            transition: var(--transition-smooth);
-            font-family: var(--font-modern);
-            font-size: 0.9rem;
-            backdrop-filter: blur(10px);
+            font-weight: 500;
         }
-        
-        .nav-btn:hover {
-            background: rgba(255, 255, 255, 0.3);
-            border-color: rgba(255, 255, 255, 0.5);
+
+        .logout-btn:hover {
+            background: #ff5252;
+        }
+
+        .nav-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .nav-tab {
+            padding: 12px 24px;
+            background: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+
+        .nav-tab:hover {
             transform: translateY(-2px);
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
         }
-        
-        .nav-btn.active {
-            background: rgba(255, 255, 255, 0.9);
-            color: #333;
-            border-color: white;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+
+        .nav-tab.active {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
         }
-        
-        .main-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 2rem;
-            min-height: calc(100vh - 120px);
-        }
-        
+
         .section {
             display: none;
-            animation: fadeIn 0.6s ease-in-out;
-            padding-top: 100px;
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
         }
-        
-        .section .card:first-child {
-            margin-top: 2rem;
-        }
-        
+
         .section.active {
             display: block;
         }
-        
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
+
+        .section h2 {
+            color: #667eea;
+            margin-bottom: 20px;
         }
-        
-        .section-title {
-            font-family: var(--font-mystical);
-            font-size: 2.5rem;
-            text-align: center;
-            margin-bottom: 2rem;
-            color: var(--color-accent);
-            text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+
+        .spread-selector {
+            margin-bottom: 20px;
         }
-        
-        .card {
-            background: var(--color-card-bg);
-            border: 2px solid var(--color-card-border);
-            border-radius: 15px;
-            padding: 2rem;
-            margin: 1rem 0;
-            box-shadow: var(--shadow-mystical);
-            backdrop-filter: blur(10px);
-            transition: var(--transition-smooth);
-        }
-        
-        .card:hover {
-            transform: translateY(-5px);
-            box-shadow: var(--shadow-mystical), var(--shadow-glow);
-        }
-        
-        .controls {
-            text-align: center;
-            margin-bottom: 2rem;
-            display: flex;
-            flex-wrap: wrap;
-            gap: 1rem;
-            justify-content: center;
-            align-items: center;
-        }
-        
-        .btn {
-            padding: 1rem 2rem;
-            background: linear-gradient(45deg, var(--color-purple-medium), var(--color-purple-light));
-            border: 2px solid var(--color-accent);
-            border-radius: 25px;
-            color: var(--color-text-light);
-            font-weight: 500;
-            cursor: pointer;
-            transition: var(--transition-smooth);
-            font-family: var(--font-modern);
-            font-size: 1rem;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .btn:hover {
-            background: linear-gradient(45deg, var(--color-accent), #ffed4a);
-            color: var(--color-primary);
-            box-shadow: var(--shadow-glow);
-            transform: translateY(-2px);
-        }
-        
-        .form-input, .form-select {
-            padding: 0.8rem 1rem;
-            background: rgba(26, 0, 51, 0.5);
-            border: 2px solid var(--color-card-border);
+
+        .spread-selector select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
             border-radius: 8px;
-            color: var(--color-text-light);
-            font-size: 1rem;
-            transition: var(--transition-smooth);
-            min-width: 200px;
+            font-size: 16px;
         }
-        
-        .form-input:focus, .form-select:focus {
-            outline: none;
-            border-color: var(--color-accent);
-            box-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
-        }
-        
-        .selected-cards {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 2rem;
-            margin: 2rem 0;
-        }
-        
-        .reading-card {
-            text-align: center;
-        }
-        
-        .reading-position {
-            font-family: var(--font-mystical);
-            font-size: 1.2rem;
-            color: var(--color-accent);
-            margin-bottom: 1rem;
-        }
-        
-        .interpretation {
-            background: rgba(255, 215, 0, 0.1);
-            padding: 1rem;
-            border-radius: 10px;
-            border: 1px solid rgba(255, 215, 0, 0.3);
-            margin-top: 1rem;
-        }
-        
-        .number-card {
-            background: linear-gradient(135deg, var(--color-purple-medium), var(--color-purple-light));
-            border: 2px solid var(--color-accent);
-            border-radius: 15px;
-            padding: 1.5rem;
-            text-align: center;
-            transition: var(--transition-smooth);
-            cursor: pointer;
-        }
-        
-        .number-card:hover {
-            transform: translateY(-5px);
-            box-shadow: var(--shadow-glow);
-        }
-        
-        .number-value {
-            font-family: var(--font-mystical);
-            font-size: 3rem;
-            color: var(--color-accent);
-            margin-bottom: 0.5rem;
-        }
-        
-        .number-type {
+
+        .draw-btn {
+            padding: 14px 30px;
+            background: linear-gradient(135deg, #FF6B35, #F7931E);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
             font-weight: 600;
-            color: var(--color-text-light);
-            margin-bottom: 1rem;
+            cursor: pointer;
+            margin-top: 20px;
         }
-        
-        .number-description {
-            color: var(--color-text-light);
-            opacity: 0.9;
-            line-height: 1.4;
+
+        .draw-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 107, 53, 0.3);
         }
-        
+
+        .cards-display {
+            margin-top: 30px;
+        }
+
+        .card {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+
+        .card h3 {
+            margin-bottom: 15px;
+            font-size: 24px;
+        }
+
+        .card-guidance {
+            margin-top: 15px;
+        }
+
+        .guidance-section {
+            margin-bottom: 15px;
+            background: rgba(255,255,255,0.1);
+            padding: 15px;
+            border-radius: 8px;
+        }
+
+        .guidance-section strong {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 16px;
+        }
+
         .hidden {
+            display: none !important;
+        }
+
+        .error-message {
+            background: #ffe0e0;
+            color: #d00;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 15px;
             display: none;
         }
-        
-        .loading {
-            display: inline-block;
-            width: 20px;
-            height: 20px;
-            border: 2px solid var(--color-text-light);
-            border-radius: 50%;
-            border-top-color: var(--color-accent);
-            animation: spin 1s ease-in-out infinite;
-        }
-        
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-        
-        .numerology-results {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 1.5rem;
-            margin-top: 2rem;
-        }
-        
-        .error-message {
-            color: #ff6b6b;
-            background: rgba(255, 107, 107, 0.1);
-            padding: 1rem;
+
+        .success-message {
+            background: #e0ffe0;
+            color: #0a0;
+            padding: 12px;
             border-radius: 8px;
-            border: 1px solid rgba(255, 107, 107, 0.3);
-            margin: 1rem 0;
-            text-align: center;
-        }
-        
-        .name-suggestion-box {
-            margin: 2rem 0;
-            padding: 1.5rem;
-            border-radius: 15px;
-            border: 2px solid;
-            background: rgba(255, 255, 255, 0.05);
-        }
-        
-        .name-suggestion-box.well-aligned {
-            border-color: #22c55e;
-            background: linear-gradient(135deg, rgba(34, 197, 94, 0.15), rgba(34, 197, 94, 0.05));
-        }
-        
-        .name-suggestion-box.needs-correction {
-            border-color: #a855f7;
-            background: linear-gradient(135deg, rgba(168, 85, 247, 0.15), rgba(255, 215, 0, 0.05));
-        }
-        
-        .detailed-guidance {
-            margin-top: 2rem;
-            padding: 2rem;
-            background: linear-gradient(135deg, rgba(255, 215, 0, 0.1), rgba(168, 85, 247, 0.05));
-            border-radius: 15px;
-            border: 1px solid rgba(255, 215, 0, 0.3);
-        }
-        
-        .guidance-section {
-            margin: 1rem 0;
-            padding: 1rem;
-            background: rgba(0, 0, 0, 0.2);
-            border-radius: 10px;
-            border-left: 4px solid var(--color-accent);
-        }
-        
-        @media (max-width: 768px) {
-            .nav-container {
-                flex-direction: column;
-                text-align: center;
-            }
-            
-            .logo {
-                font-size: 1.5rem;
-            }
-            
-            .section-title {
-                font-size: 2rem;
-            }
-            
-            .main-container {
-                padding: 1rem;
-            }
-            
-            .controls {
-                flex-direction: column;
-            }
-            
-            body {
-                padding-top: 120px;
-            }
-            
-            .section {
-                padding-top: 60px;
-            }
+            margin-bottom: 15px;
+            display: none;
         }
     </style>
 </head>
 <body>
-    <header class="header">
-        <div class="nav-container">
-            <h1 class="logo">✨ Mystic Divination ✨</h1>
-            <div class="nav-buttons">
-                <button class="nav-btn active" data-section="home">🏠 Home</button>
-                <button class="nav-btn" data-section="tarot">🎴 Tarot</button>
-                <button class="nav-btn" data-section="numerology">🔢 Numerology</button>
-                <button class="nav-btn" data-section="moonology">🌙 Moonology</button>
-                <button class="nav-btn" data-section="kali">🔥 Kali</button>
+    <!-- Login Page -->
+    <div id="loginPage" class="login-container">
+        <div class="login-box">
+            <h1>🔮 Mystic Divination</h1>
+            <p>Oracle Platform</p>
+
+            <div id="errorMsg" class="error-message"></div>
+            <div id="successMsg" class="success-message"></div>
+
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <input type="text" id="username" name="username" required autocomplete="username">
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" required autocomplete="current-password">
+                </div>
+
+                <button type="submit" class="login-btn">Sign In</button>
+            </form>
+
+            <div class="demo-accounts">
+                <h3>Demo Accounts:</h3>
+                <p>👑 Admin: <strong>admin</strong> / <strong>admin123</strong></p>
+                <p>🆓 Free: <strong>user</strong> / <strong>user123</strong></p>
+                <p>🎫 Premium: <strong>premium</strong> / <strong>premium123</strong></p>
+                <p>🔥 Unlimited: <strong>unlimited</strong> / <strong>unlimited123</strong></p>
             </div>
         </div>
-    </header>
+    </div>
 
-    <main class="main-container">
-        <!-- Home Section -->
-        <section id="home" class="section active">
-            <h2 class="section-title">Welcome to Mystic Divination</h2>
-            <div class="card">
-                <h3 style="color: var(--color-accent); text-align: center; margin-bottom: 1.5rem;">🌟 Today's Cosmic Energy 🌟</h3>
-                <div style="text-align: center; margin-bottom: 2rem;">
-                    <p style="font-size: 1.2rem; color: var(--color-text-light); margin-bottom: 1rem;"><strong id="currentDate"></strong></p>
-                    <p style="color: var(--color-text-accent); font-style: italic;">"The universe speaks to those who listen with their hearts"</p>
-                </div>
-                
-                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem; margin-top: 2rem;">
-                    <div class="number-card" onclick="showSection('tarot')">
-                        <div style="font-size: 2.5rem; margin-bottom: 1rem;">🎴</div>
-                        <h4 style="color: var(--color-accent); margin-bottom: 0.5rem;">Enhanced Tarot</h4>
-                        <p style="font-size: 0.85rem; opacity: 0.7; color: #50b4c8; margin-bottom: 0.3rem;">✨ Auto &amp; Manual Draw</p>
-                        <p style="font-size: 0.9rem; opacity: 0.8;">6 spreads • 3 depths • 78 cards</p>
-                    </div>
-                    
-                    <div class="number-card" onclick="showSection('numerology')">
-                        <div style="font-size: 2.5rem; margin-bottom: 1rem;">🔢</div>
-                        <h4 style="color: var(--color-accent); margin-bottom: 0.5rem;">Complete Numerology</h4>
-                        <p style="font-size: 0.9rem; opacity: 0.8;">15+ calculations • Life path • Compatibility</p>
-                    </div>
-                    
-                    <div class="number-card" onclick="showSection('moonology')">
-                        <div style="font-size: 2.5rem; margin-bottom: 1rem;">🌙</div>
-                        <h4 style="color: var(--color-accent); margin-bottom: 0.5rem;">Lunar Oracle</h4>
-                        <p style="font-size: 0.85rem; opacity: 0.7; color: #50b4c8; margin-bottom: 0.3rem;">✨ Auto &amp; Manual Draw</p>
-                        <p style="font-size: 0.9rem; opacity: 0.8;">4 spreads • Moon phases • Manifestation</p>
-                    </div>
-                    
-                    <div class="number-card" onclick="showSection('kali')">
-                        <div style="font-size: 2.5rem; margin-bottom: 1rem;">🔥</div>
-                        <h4 style="color: var(--color-accent); margin-bottom: 0.5rem;">Kali Oracle</h4>
-                        <p style="font-size: 0.85rem; opacity: 0.7; color: #50b4c8; margin-bottom: 0.3rem;">✨ Auto &amp; Manual Draw</p>
-                        <p style="font-size: 0.9rem; opacity: 0.8;">4 spreads • Shadow work • Divine feminine</p>
-                    </div>
-                </div>
+    <!-- Main App -->
+    <div id="appContainer" class="app-container">
+        <div class="app-header">
+            <h1>🔮 Mystic Divination</h1>
+            <div class="user-info">
+                <span id="userDisplay">Welcome!</span>
+                <button class="logout-btn" onclick="logout()">Logout</button>
             </div>
-        </section>
+        </div>
+
+        <div class="nav-tabs">
+            <button class="nav-tab active" onclick="showSection('tarot')">🎴 Tarot</button>
+            <button class="nav-tab" onclick="showSection('history')">📚 History</button>
+        </div>
 
         <!-- Tarot Section -->
-        <section id="tarot" class="section">
-            <h2 class="section-title">Enhanced Tarot Reading</h2>
-            <div class="card">
-                <div class="controls">
-                    <select id="spreadType" class="form-select">
-                        <option value="single">Single Card - Daily Guidance ⚡</option>
-                        <option value="three">Three Cards - Past • Present • Future 📖</option>
-                        <option value="celtic">Celtic Cross - Complete Life Reading 🔮</option>
-                        <option value="love">Love Spread - Relationship Insights 💕</option>
-                        <option value="career">Career Path - Professional Guidance 💼</option>
-                        <option value="yesno">Yes/No - Clear Answer ❓</option>
-                    </select>
-                    <select id="readingDepth" class="form-select">
-                        <option value="quick">Quick ⚡ - Card names &amp; basic meanings</option>
-                        <option value="standard">Standard 📖 - Individual cards + combinations</option>
-                        <option value="deep">Deep 🔮 - Full analysis + elemental + guidance</option>
-                    </select>
-                    <div class="draw-mode-selector">
-                        <span style="color: var(--color-text-light); margin-right: 1rem;">Draw Mode:</span>
-                        <div class="draw-mode-toggle active" data-mode="auto" data-oracle="tarot">🎯 Auto Draw</div>
-                        <div class="draw-mode-toggle" data-mode="manual" data-oracle="tarot">✋ Manual Draw</div>
-                    </div>
-                    <button class="btn" id="startReading">🔮 Shuffle &amp; Draw Cards</button>
-                    <button class="btn" id="resetReading">🔄 Reset Reading</button>
-                </div>
-                <div class="card-deck-container" id="cardDeckContainer">
-                    <div class="selection-info">
-                        <p class="manual-draw-instructions">✨ Trust your intuition and select the cards that call to you ✨</p>
-                        <div class="selection-counter" id="selectionCounter">Cards selected: 0 / 1</div>
-                    </div>
-                    <div id="cardDeck"></div>
-                    <button class="reveal-btn" id="revealBtn">🔮 Reveal Your Reading</button>
-                </div>
-                <div id="tarotResults" class="hidden">
-                    <div id="drawnCards" class="selected-cards"></div>
-                    <div id="interpretation" class="interpretation"></div>
-                </div>
-            </div>
-        </section>
+        <div id="tarot" class="section active">
+            <h2>🎴 Tarot Reading</h2>
 
-        <!-- Numerology Section -->
-        <section id="numerology" class="section">
-            <h2 class="section-title">Complete Numerology</h2>
-            <div class="card">
-                <div class="controls">
-                    <input type="text" id="fullName" class="form-input" placeholder="Enter your full name" required>
-                    <input type="date" id="numerologyBirthDate" class="form-input" required>
-                    <button class="btn" id="calculateNumerology">✨ Calculate All Numbers</button>
-                </div>
-                <div id="numerologyResults" class="numerology-results hidden"></div>
+            <div class="spread-selector">
+                <label>Select Spread:</label>
+                <select id="spreadType">
+                    <option value="single">Single Card</option>
+                    <option value="three">Three Card (Past/Present/Future)</option>
+                    <option value="relationship">Relationship Dynamics (7 cards)</option>
+                </select>
             </div>
-        </section>
 
-        <!-- Moonology Section -->
-        <section id="moonology" class="section">
-            <h2 class="section-title">Lunar Oracle Guidance</h2>
-            <div class="card">
-                <div class="controls">
-                    <select id="moonSpreadType" class="form-select">
-                        <option value="daily">Daily Lunar Guidance - Single card wisdom 🌙</option>
-                        <option value="phase">Moon Phase Reading - Current energy • Challenge • Guidance 🌓</option>
-                        <option value="cycle">Full Lunar Cycle - Complete 8-phase journey 🌕</option>
-                        <option value="manifestation">Manifestation Spread - Intention to outcome ✨</option>
-                    </select>
-                    <div class="draw-mode-selector">
-                        <span style="color: var(--color-text-light); margin-right: 1rem;">Draw Mode:</span>
-                        <div class="draw-mode-toggle active" data-mode="auto" data-oracle="moonology">🎲 Auto Draw</div>
-                        <div class="draw-mode-toggle" data-mode="manual" data-oracle="moonology">👆 Manual Draw</div>
-                    </div>
-                    <button class="btn" id="drawMoonCards">🌙 Draw Lunar Cards</button>
-                    <button class="btn" id="resetMoonReading">🔄 Reset</button>
-                </div>
-                <div class="card-deck-container" id="moonDeckContainer">
-                    <div class="selection-info">
-                        <p class="manual-draw-instructions">🌙 Connect with lunar energy and choose intuitively 🌙</p>
-                        <div class="selection-counter" id="moonSelectionCounter">Cards selected: 0 / 1</div>
-                    </div>
-                    <div id="moonCardDeck"></div>
-                    <button class="reveal-btn" id="moonRevealBtn">🌙 Reveal Lunar Guidance</button>
-                </div>
-                <div id="moonResults" class="hidden">
-                    <div id="moonCards" class="selected-cards"></div>
-                    <div id="moonInterpretation" class="interpretation"></div>
-                </div>
-            </div>
-        </section>
+            <button class="draw-btn" onclick="drawCards()">✨ Draw Cards</button>
 
-        <!-- Kali Oracle Section -->
-        <section id="kali" class="section">
-            <h2 class="section-title">Divine Feminine Power</h2>
-            <div class="card">
-                <div class="controls">
-                    <select id="kaliSpreadType" class="form-select">
-                        <option value="daily">Daily Kali Message - Single fierce wisdom 🔥</option>
-                        <option value="shadow">Shadow Work Spread - Shadow • Lesson • Integration 🖤</option>
-                        <option value="transformation">Transformation Spread - Death • Process • Rebirth 🦋</option>
-                        <option value="warrior">Warrior Path - Complete 7-card journey ⚔️</option>
-                    </select>
-                    <div class="draw-mode-selector">
-                        <span style="color: var(--color-text-light); margin-right: 1rem;">Draw Mode:</span>
-                        <div class="draw-mode-toggle active" data-mode="auto" data-oracle="kali">🎲 Auto Draw</div>
-                        <div class="draw-mode-toggle" data-mode="manual" data-oracle="kali">👆 Manual Draw</div>
-                    </div>
-                    <button class="btn" id="drawKaliCards">🔥 Channel Kali's Power</button>
-                    <button class="btn" id="resetKaliReading">🔄 Reset</button>
-                </div>
-                <div class="card-deck-container" id="kaliDeckContainer">
-                    <div class="selection-info">
-                        <p class="manual-draw-instructions">🔥 Channel Kali's fierce wisdom and choose with power 🔥</p>
-                        <div class="selection-counter" id="kaliSelectionCounter">Cards selected: 0 / 1</div>
-                    </div>
-                    <div id="kaliCardDeck"></div>
-                    <button class="reveal-btn" id="kaliRevealBtn">🔥 Channel Divine Power</button>
-                </div>
-                <div id="kaliResults" class="hidden">
-                    <div id="kaliCards" class="selected-cards"></div>
-                    <div id="kaliInterpretation" class="interpretation"></div>
-                </div>
+            <div id="cardsDisplay" class="cards-display"></div>
+        </div>
+
+        <!-- History Section -->
+        <div id="history" class="section">
+            <h2>📚 Reading History</h2>
+            <div id="historyList">
+                <p>No readings yet. Draw your first cards!</p>
             </div>
-        </section>
-    </main>
+        </div>
+    </div>
 
     <script>
-        // Initialize current date display
-        function updateCurrentDate() {
-            const now = new Date();
-            const options = { 
-                weekday: 'long', 
-                year: 'numeric', 
-                month: 'long', 
-                day: 'numeric'
-            };
-            document.getElementById('currentDate').textContent = now.toLocaleDateString('en-US', options);
-        }
-        
-        // Complete 78-card Tarot deck
+        // User Database
+        const users = [
+            {
+                username: 'admin',
+                password: 'admin123',
+                role: 'admin',
+                plan: 'unlimited'
+            },
+            {
+                username: 'user',
+                password: 'user123',
+                role: 'user',
+                plan: 'free'
+            },
+            {
+                username: 'premium',
+                password: 'premium123',
+                role: 'user',
+                plan: '5draw',
+                drawsRemaining: 3
+            },
+            {
+                username: 'unlimited',
+                password: 'unlimited123',
+                role: 'user',
+                plan: 'unlimited'
+            }
+        ];
+
+        // Tarot Cards Database
         const tarotCards = [
-            // Major Arcana (22 cards)
-            { number: 0, name: "The Fool", symbol: "🃏", upright: "New beginnings, innocence, spontaneity, free spirit, adventure", reversed: "Recklessness, taken advantage of, inconsideration, naivety", description: "The Fool represents new beginnings and carefree adventures. A leap of faith into the unknown.", element: "Air" },
-            { number: 1, name: "The Magician", symbol: "🎩", upright: "Manifestation, resourcefulness, power, inspired action, potential", reversed: "Manipulation, poor planning, untapped talents, illusion", description: "The Magician symbolizes manifestation and taking inspired action to achieve your goals.", element: "Air" },
-            { number: 2, name: "The High Priestess", symbol: "🌙", upright: "Intuition, sacred knowledge, divine feminine, subconscious mind", reversed: "Secrets, disconnected from intuition, withdrawal, silence", description: "The High Priestess represents intuition and accessing the deeper mysteries of life.", element: "Water" },
-            { number: 3, name: "The Empress", symbol: "👑", upright: "Femininity, beauty, nature, nurturing, abundance, fertility", reversed: "Creative block, dependence on others, emptiness, lack of growth", description: "The Empress embodies feminine energy, abundance and natural creativity flowing freely.", element: "Earth" },
-            { number: 4, name: "The Emperor", symbol: "🏰", upright: "Authority, establishment, structure, father figure, leadership", reversed: "Domination, excessive control, lack of discipline, inflexibility", description: "The Emperor represents structure, authority and creating order from chaos.", element: "Fire" },
-            { number: 5, name: "The Hierophant", symbol: "⛪", upright: "Spiritual wisdom, religious beliefs, conformity, tradition, institutions", reversed: "Personal beliefs, freedom, challenging the status quo, rebellion", description: "The Hierophant symbolizes tradition, conformity and seeking spiritual guidance from established systems.", element: "Earth" },
-            { number: 6, name: "The Lovers", symbol: "💕", upright: "Love, harmony, relationships, values alignment, choices, union", reversed: "Self-love, disharmony, imbalance, misalignment of values", description: "The Lovers represent love, harmony and important choices in relationships and values.", element: "Air" },
-            { number: 7, name: "The Chariot", symbol: "🏇", upright: "Control, willpower, success, action, determination, victory", reversed: "Self-discipline, opposition, lack of direction, aggression", description: "The Chariot signifies determination, willpower and victory through focused effort and control.", element: "Water" },
-            { number: 8, name: "Strength", symbol: "🦁", upright: "Strength, courage, persuasion, influence, compassion, inner power", reversed: "Inner strength, self-doubt, low energy, raw emotion, weakness", description: "Strength represents inner power, courage and gentle influence over challenging situations.", element: "Fire" },
-            { number: 9, name: "The Hermit", symbol: "🕯️", upright: "Soul-searching, introspection, being alone, inner guidance, wisdom", reversed: "Isolation, loneliness, withdrawal, paranoia, exile", description: "The Hermit symbolizes introspection, wisdom and the journey of self-discovery through solitude.", element: "Earth" },
-            { number: 10, name: "Wheel of Fortune", symbol: "🎡", upright: "Good luck, karma, life cycles, destiny, turning point, fortune", reversed: "Bad luck, resistance to change, breaking cycles, external forces", description: "Wheel of Fortune represents destiny, life cycles and the ever-turning wheel of fate and karma.", element: "Fire" },
-            { number: 11, name: "Justice", symbol: "⚖️", upright: "Justice, fairness, truth, cause and effect, law, integrity", reversed: "Unfairness, lack of accountability, dishonesty, injustice", description: "Justice embodies fairness, truth and the universal law of cause and effect in all situations.", element: "Air" },
-            { number: 12, name: "The Hanged Man", symbol: "🙃", upright: "Pause, surrender, letting go, new perspectives, sacrifice", reversed: "Delays, resistance, stalling, indecision, needless sacrifice", description: "The Hanged Man represents surrender, new perspectives and the wisdom found in letting go.", element: "Water" },
-            { number: 13, name: "Death", symbol: "💀", upright: "Endings, change, transformation, transition, new beginnings", reversed: "Resistance to change, personal transformation, inner purging, fear", description: "Death symbolizes transformation, endings that lead to new beginnings, and natural cycles of change.", element: "Water" },
-            { number: 14, name: "Temperance", symbol: "🍷", upright: "Balance, moderation, patience, purpose, meaning, harmony", reversed: "Imbalance, excess, self-healing, re-alignment, extremes", description: "Temperance represents balance, moderation and finding the middle path in all aspects of life.", element: "Fire" },
-            { number: 15, name: "The Devil", symbol: "😈", upright: "Shadow self, attachment, addiction, restriction, sexuality, materialism", reversed: "Releasing limiting beliefs, exploring dark thoughts, detachment", description: "The Devil symbolizes bondage to material desires and the shadow aspects of human nature.", element: "Earth" },
-            { number: 16, name: "The Tower", symbol: "🗼", upright: "Sudden change, upheaval, chaos, revelation, awakening, disaster", reversed: "Personal transformation, fear of change, averting disaster, delay", description: "The Tower represents sudden upheaval, revelation and the necessary destruction of false foundations.", element: "Fire" },
-            { number: 17, name: "The Star", symbol: "⭐", upright: "Hope, faith, purpose, renewal, spirituality, inspiration, serenity", reversed: "Lack of faith, despair, self-trust, disconnection, negativity", description: "The Star embodies hope, inspiration and spiritual renewal after periods of darkness.", element: "Air" },
-            { number: 18, name: "The Moon", symbol: "🌜", upright: "Illusion, fear, anxiety, subconscious, intuition, dreams", reversed: "Release of fear, repressed emotion, inner confusion, deception", description: "The Moon represents illusion, intuition and the mysterious realm of the subconscious mind.", element: "Water" },
-            { number: 19, name: "The Sun", symbol: "☀️", upright: "Positivity, fun, warmth, success, vitality, joy, confidence", reversed: "Inner child, feeling down, overly optimistic, unrealistic expectations", description: "The Sun symbolizes joy, success, vitality and the pure positive energy of life itself.", element: "Fire" },
-            { number: 20, name: "Judgement", symbol: "📯", upright: "Judgement, rebirth, inner calling, absolution, reflection, awakening", reversed: "Self-doubt, inner critic, ignoring the call, lack of self-awareness", description: "Judgement represents rebirth, inner calling and the process of spiritual awakening and renewal.", element: "Fire" },
-            { number: 21, name: "The World", symbol: "🌍", upright: "Completion, accomplishment, travel, fulfillment, achievement, success", reversed: "Seeking personal closure, short-cuts, delays, incompletion", description: "The World embodies completion, accomplishment and the successful integration of life's lessons.", element: "Earth" },
-            
-            // Minor Arcana - Wands (Fire) - 14 cards
-            { suit: "Wands", number: "Ace", name: "Ace of Wands", symbol: "🔥", upright: "Inspiration, new opportunities, growth, potential, creative spark", reversed: "An emerging idea, lack of direction, distractions, delays", description: "New creative beginnings and inspired action. The spark of divine inspiration.", element: "Fire" },
-            { suit: "Wands", number: 2, name: "Two of Wands", symbol: "⚡", upright: "Future planning, making decisions, personal goals, discovery", reversed: "Lack of planning, fear of unknown, over-reliance on others", description: "Planning and making decisions about your future path with confidence.", element: "Fire" },
-            { suit: "Wands", number: 3, name: "Three of Wands", symbol: "🌟", upright: "Expansion, foresight, overseas opportunities, leadership", reversed: "Playing small, lack of foresight, unexpected delays", description: "Expanding your horizons and looking toward future opportunities.", element: "Fire" },
-            { suit: "Wands", number: 4, name: "Four of Wands", symbol: "🎉", upright: "Celebration, harmony, home, achievement, stability", reversed: "Personal celebration, inner harmony, conflict with others", description: "Celebration of achievements and finding harmony in your environment.", element: "Fire" },
-            { suit: "Wands", number: 5, name: "Five of Wands", symbol: "⚔️", upright: "Conflict, disagreements, competition, tension, diversity", reversed: "Inner conflict, conflict avoidance, release of tension", description: "Healthy competition and working through conflicts constructively.", element: "Fire" },
-            { suit: "Wands", number: 6, name: "Six of Wands", symbol: "🏆", upright: "Success, public recognition, progress, self-confidence", reversed: "Private achievement, personal definition of success, fall from grace", description: "Victory, recognition and public acknowledgment of your achievements.", element: "Fire" },
-            { suit: "Wands", number: 7, name: "Seven of Wands", symbol: "🛡️", upright: "Challenge, competition, perseverance, standing your ground", reversed: "Exhaustion, giving up, overwhelmed", description: "Standing your ground and defending your position against challenges.", element: "Fire" },
-            { suit: "Wands", number: 8, name: "Eight of Wands", symbol: "💨", upright: "Speed, rapid action, airborne, movement, quick thinking", reversed: "Delays, frustration, resisting change, internal alignment", description: "Swift movement, rapid progress and things happening quickly.", element: "Fire" },
-            { suit: "Wands", number: 9, name: "Nine of Wands", symbol: "🏔️", upright: "Resilience, courage, persistence, test of faith, boundaries", reversed: "Inner resources, struggle, overwhelm, defensive", description: "Resilience and persistence in the face of final challenges.", element: "Fire" },
-            { suit: "Wands", number: 10, name: "Ten of Wands", symbol: "📦", upright: "Burden, hard work, responsibility, stress, achievement", reversed: "Release, delegate, burden, struggle", description: "Heavy responsibilities and burdens that come with success.", element: "Fire" },
-            { suit: "Wands", number: "Page", name: "Page of Wands", symbol: "🧑", upright: "Inspiration, ideas, discovery, limitless potential, free spirit", reversed: "Newly formed ideas, redirecting energy, self-limiting beliefs", description: "Youthful enthusiasm and the beginning of creative endeavors.", element: "Fire" },
-            { suit: "Wands", number: "Knight", name: "Knight of Wands", symbol: "🐎", upright: "Action, adventure, fearlessness, energy, impulsiveness", reversed: "Passion project, haste, scattered energy, delays", description: "Adventurous spirit and taking bold action toward your goals.", element: "Fire" },
-            { suit: "Wands", number: "Queen", name: "Queen of Wands", symbol: "👸", upright: "Courage, confidence, independence, social butterfly, determination", reversed: "Self-respect, self-confidence, introverted, re-establish sense of self", description: "Confident leadership and warm, charismatic energy.", element: "Fire" },
-            { suit: "Wands", number: "King", name: "King of Wands", symbol: "🤴", upright: "Natural leader, vision, entrepreneur, honour, loyalty", reversed: "Impulsiveness, haste, ruthless, high expectations", description: "Visionary leadership and the ability to inspire others to action.", element: "Fire" },
-            
-            // Minor Arcana - Cups (Water) - 14 cards
-            { suit: "Cups", number: "Ace", name: "Ace of Cups", symbol: "💧", upright: "Love, new relationships, compassion, creativity, spirituality", reversed: "Self-love, intuition, repressed emotions, blocked creativity", description: "New emotional beginnings and the opening of the heart to love.", element: "Water" },
-            { suit: "Cups", number: 2, name: "Two of Cups", symbol: "💕", upright: "Unified love, partnership, mutual attraction, relationships", reversed: "Self-love, break-ups, disharmony, distrust", description: "Partnership, unity and mutual attraction in relationships.", element: "Water" },
-            { suit: "Cups", number: 3, name: "Three of Cups", symbol: "🎊", upright: "Celebration, friendship, creativity, collaborations, community", reversed: "Independence, alone time, hardcore partying, three's a crowd", description: "Friendship, community and shared celebrations of joy.", element: "Water" },
-            { suit: "Cups", number: 4, name: "Four of Cups", symbol: "🤔", upright: "Meditation, contemplation, apathy, reevaluation, boredom", reversed: "Retreat, withdrawal, checking in with yourself", description: "Contemplation and reevaluating your emotional priorities.", element: "Water" },
-            { suit: "Cups", number: 5, name: "Five of Cups", symbol: "😢", upright: "Regret, failure, disappointment, pessimism, grief", reversed: "Personal setbacks, self-forgiveness, moving on", description: "Disappointment and grief, but also the hope for emotional recovery.", element: "Water" },
-            { suit: "Cups", number: 6, name: "Six of Cups", symbol: "🎁", upright: "Revisiting the past, childhood memories, innocence, joy", reversed: "Living in the past, forgiveness, lacking playfulness", description: "Nostalgia, childhood memories and reconnecting with your inner child.", element: "Water" },
-            { suit: "Cups", number: 7, name: "Seven of Cups", symbol: "☁️", upright: "Opportunities, choices, wishful thinking, illusion, fantasy", reversed: "Alignment, personal values, overwhelmed by choices", description: "Multiple options and the need to choose wisely among illusions.", element: "Water" },
-            { suit: "Cups", number: 8, name: "Eight of Cups", symbol: "🚶", upright: "Disappointment, abandonment, withdrawal, escapism, seeking higher purpose", reversed: "Trying one more time, indecision, aimless drifting", description: "Walking away from disappointment to seek deeper fulfillment.", element: "Water" },
-            { suit: "Cups", number: 9, name: "Nine of Cups", symbol: "😊", upright: "Contentment, satisfaction, gratitude, wish come true, luxury", reversed: "Inner happiness, materialism, dissatisfaction, indulgence", description: "Emotional fulfillment and contentment with life's blessings.", element: "Water" },
-            { suit: "Cups", number: 10, name: "Ten of Cups", symbol: "🌈", upright: "Divine love, blissful relationships, harmony, alignment, happiness", reversed: "Disconnection, misaligned values, struggling relationships", description: "Ultimate emotional fulfillment and harmony in relationships.", element: "Water" },
-            { suit: "Cups", number: "Page", name: "Page of Cups", symbol: "🧚", upright: "Creative opportunities, intuitive messages, curiosity, possibility", reversed: "New ideas, doubting intuition, creative blocks, emotional immaturity", description: "Youthful creativity and openness to emotional and intuitive messages.", element: "Water" },
-            { suit: "Cups", number: "Knight", name: "Knight of Cups", symbol: "🌊", upright: "Creativity, romance, charm, imagination, beauty, artistry", reversed: "Overactive imagination, unrealistic, jealous, moody", description: "Romantic idealism and following your heart's desires.", element: "Water" },
-            { suit: "Cups", number: "Queen", name: "Queen of Cups", symbol: "🔮", upright: "Compassion, caring, emotionally stable, intuitive, in flow", reversed: "Inner compassion, self-care, co-dependency, martyrdom", description: "Emotional maturity and compassionate understanding of others.", element: "Water" },
-            { suit: "Cups", number: "King", name: "King of Cups", symbol: "🌊👑", upright: "Emotionally balanced, compassionate, diplomatic, wisdom, calmness", reversed: "Self-compassion, inner feelings, moodiness, emotionally manipulative", description: "Emotional mastery and the ability to remain calm in turbulent situations.", element: "Water" },
-            
-            // Minor Arcana - Swords (Air) - 14 cards
-            { suit: "Swords", number: "Ace", name: "Ace of Swords", symbol: "⚔️", upright: "Breakthrough, clarity, sharp mind, new ideas, mental force", reversed: "Confusion, brutality, chaos, lack of clarity", description: "Mental clarity and breakthrough moments of understanding.", element: "Air" },
-            { suit: "Swords", number: 2, name: "Two of Swords", symbol: "🗡️", upright: "Difficult decisions, weighing options, an impasse, avoidance", reversed: "Indecision, confusion, information overload, postponing decisions", description: "Difficult choices and the need to make decisions despite uncertainty.", element: "Air" },
-            { suit: "Swords", number: 3, name: "Three of Swords", symbol: "💔", upright: "Heartbreak, emotional pain, sorrow, grief, betrayal", reversed: "Negative self-talk, releasing pain, optimism, forgiveness", description: "Heartbreak, sorrow and the process of healing emotional wounds.", element: "Air" },
-            { suit: "Swords", number: 4, name: "Four of Swords", symbol: "🛏️", upright: "Rest, relaxation, meditation, contemplation, recuperation", reversed: "Awakening, re-entering world, activism, burn out", description: "Rest, recuperation and taking time for peaceful contemplation.", element: "Air" },
-            { suit: "Swords", number: 5, name: "Five of Swords", symbol: "⚔️💔", upright: "Conflict, disagreements, competition, defeat, winning at all costs", reversed: "Reconciliation, making amends, past resentment", description: "Conflict and the hollow victory that comes from winning at any cost.", element: "Air" },
-            { suit: "Swords", number: 6, name: "Six of Swords", symbol: "⛵", upright: "Transition, change, rite of passage, releasing baggage, moving forward", reversed: "Personal transition, resistance to change, unfinished business", description: "Transition and moving forward from difficult circumstances.", element: "Air" },
-            { suit: "Swords", number: 7, name: "Seven of Swords", symbol: "🥷", upright: "Theft, deception, getting away with something, stealth, cunning", reversed: "Imposter syndrome, self-deceit, keeping secrets", description: "Deception, theft and the need for strategic thinking.", element: "Air" },
-            { suit: "Swords", number: 8, name: "Eight of Swords", symbol: "🕸️", upright: "Negative thinking, restricted freedom, feeling trapped, victim mentality", reversed: "Self-limiting beliefs, inner critic, releasing restrictions", description: "Feeling trapped by circumstances or negative thought patterns.", element: "Air" },
-            { suit: "Swords", number: 9, name: "Nine of Swords", symbol: "😰", upright: "Anxiety, worry, fear, depression, nightmares, isolation", reversed: "Inner turmoil, deep-seated fears, secrets, releasing worry", description: "Anxiety, worry and the mental anguish that keeps you awake at night.", element: "Air" },
-            { suit: "Swords", number: 10, name: "Ten of Swords", symbol: "🗡️📍", upright: "Painful endings, deep wounds, betrayal, loss, crisis, breakdown", reversed: "Recovery, regeneration, resisting an inevitable end", description: "Painful endings and the rock bottom that precedes new beginnings.", element: "Air" },
-            { suit: "Swords", number: "Page", name: "Page of Swords", symbol: "🗡️👤", upright: "New ideas, curiosity, thirst for knowledge, new ways of communicating", reversed: "Self-expression, all talk and no action, haste, unformed ideas", description: "Intellectual curiosity and the eagerness to learn and communicate.", element: "Air" },
-            { suit: "Swords", number: "Knight", name: "Knight of Swords", symbol: "🏃⚔️", upright: "Ambitious, action-oriented, driven to succeed, fast-thinking", reversed: "Restless, unfocused, impulsive, burn-out", description: "Swift action and ambitious pursuit of intellectual goals.", element: "Air" },
-            { suit: "Swords", number: "Queen", name: "Queen of Swords", symbol: "👸⚔️", upright: "Independent, unbiased judgement, clear boundaries, direct communication", reversed: "Overly emotional, easily influenced, bitchy, cold-hearted", description: "Clear thinking and direct communication with emotional intelligence.", element: "Air" },
-            { suit: "Swords", number: "King", name: "King of Swords", symbol: "🤴⚔️", upright: "Mental clarity, intellectual power, authority, truth, clear thinking", reversed: "Quiet power, inner truth, misuse of power, manipulation", description: "Intellectual authority and the power of clear, logical thinking.", element: "Air" },
-            
-            // Minor Arcana - Pentacles (Earth) - 14 cards
-            { suit: "Pentacles", number: "Ace", name: "Ace of Pentacles", symbol: "💰", upright: "A new financial or career opportunity, manifestation, abundance", reversed: "Lost opportunity, lack of planning, poor financial decisions", description: "New financial opportunities and material manifestation of goals.", element: "Earth" },
-            { suit: "Pentacles", number: 2, name: "Two of Pentacles", symbol: "⚖️💰", upright: "Multiple priorities, time management, prioritisation, adaptability", reversed: "Over-committed, disorganisation, reprioritisation", description: "Balancing multiple priorities and managing resources effectively.", element: "Earth" },
-            { suit: "Pentacles", number: 3, name: "Three of Pentacles", symbol: "🔨", upright: "Teamwork, collaboration, learning, implementation, building", reversed: "Disharmony, misalignment, working alone, lack of teamwork", description: "Collaboration, teamwork and building something meaningful together.", element: "Earth" },
-            { suit: "Pentacles", number: 4, name: "Four of Pentacles", symbol: "🏛️", upright: "Saving money, security, conservatism, scarcity, control", reversed: "Over-spending, greed, self-protection, financial insecurity", description: "Financial security and the balance between saving and spending.", element: "Earth" },
-            { suit: "Pentacles", number: 5, name: "Five of Pentacles", symbol: "❄️", upright: "Financial loss, poverty, lack mindset, isolation, worry", reversed: "Recovery from financial loss, spiritual poverty", description: "Financial hardship and feeling left out in the cold.", element: "Earth" },
-            { suit: "Pentacles", number: 6, name: "Six of Pentacles", symbol: "🤝", upright: "Giving and receiving, sharing wealth, generosity, charity", reversed: "Self-care, unpaid debts, one-sided charity", description: "Generosity and the balance between giving and receiving.", element: "Earth" },
-            { suit: "Pentacles", number: 7, name: "Seven of Pentacles", symbol: "🌱", upright: "Patience, long-term view, sustainable results, perseverance", reversed: "Lack of long-term vision, limited success, lack of reward", description: "Patience and waiting for long-term investments to bear fruit.", element: "Earth" },
-            { suit: "Pentacles", number: 8, name: "Eight of Pentacles", symbol: "🔧", upright: "Apprenticeship, repetitive tasks, mastery, skill development", reversed: "Lack of focus, perfectionism, misdirected activity", description: "Dedication to craft and the mastery that comes from practice.", element: "Earth" },
-            { suit: "Pentacles", number: 9, name: "Nine of Pentacles", symbol: "🏡", upright: "Abundance, luxury, self-sufficiency, financial independence", reversed: "Self-worth, over-investment in work, hustling", description: "Financial independence and enjoying the fruits of your labor.", element: "Earth" },
-            { suit: "Pentacles", number: 10, name: "Ten of Pentacles", symbol: "🏰💰", upright: "Wealth, financial security, family, long-term success, contribution", reversed: "The dark side of wealth, financial failure, loneliness", description: "Wealth, family legacy and long-term financial security.", element: "Earth" },
-            { suit: "Pentacles", number: "Page", name: "Page of Pentacles", symbol: "💰👤", upright: "Manifestation, financial opportunity, skill development, hard work", reversed: "Lack of progress, procrastination, learn from failure", description: "New opportunities for learning and developing practical skills.", element: "Earth" },
-            { suit: "Pentacles", number: "Knight", name: "Knight of Pentacles", symbol: "🐎💰", upright: "Hard work, productivity, routine, conservatism, service", reversed: "Self-discipline, boredom, feeling 'stuck', perfectionism", description: "Steady progress and methodical approach to achieving goals.", element: "Earth" },
-            { suit: "Pentacles", number: "Queen", name: "Queen of Pentacles", symbol: "👸💰", upright: "Nurturing, practical, providing financially, a working parent", reversed: "Financial independence, self-care, work-home conflict", description: "Nurturing abundance and practical care for others' needs.", element: "Earth" },
-            { suit: "Pentacles", number: "King", name: "King of Pentacles", symbol: "🤴💰", upright: "Financial success, business acumen, security, discipline, abundance", reversed: "Financially inept, obsessed with wealth and status, stubborn", description: "Financial mastery and the ability to create lasting abundance.", element: "Earth" }
+            {
+                name: 'The Fool',
+                teaching: 'The Fool represents new beginnings and taking a leap of faith. You stand at the precipice of an exciting journey with infinite potential.',
+                advice: 'Take that first step. Start the project, make the call, book the trip. Trust your instincts and embrace spontaneity.',
+                warning: 'Avoid recklessness. While spontaneity is valuable, don't ignore practical concerns. Balance enthusiasm with basic preparation.',
+                affirmation: 'I embrace new beginnings with courage and wisdom.'
+            },
+            {
+                name: 'The Magician',
+                teaching: 'You possess all the tools needed to manifest your desires. The Magician represents your power to transform ideas into reality.',
+                advice: 'Use your skills strategically. Set clear intentions and take concrete steps. Your manifestation power is strong now.',
+                warning: 'Beware of manipulation or using your skills selfishly. Ensure your manifestations align with your highest good.',
+                affirmation: 'I have all the resources I need to manifest my desires.'
+            },
+            {
+                name: 'The High Priestess',
+                teaching: 'Trust your intuition and inner wisdom. The High Priestess guides you to listen to your inner voice and honor your mysteries.',
+                advice: 'Spend time in meditation and reflection. Pay attention to dreams and synchronicities. Your intuition is heightened.',
+                warning: 'Don't let mystery become secrecy or avoidance. Balance intuition with action when the time is right.',
+                affirmation: 'I trust my intuition and honor my inner wisdom.'
+            },
+            {
+                name: 'The Empress',
+                teaching: 'Abundance, creativity, and nurturing energy flow through you. The Empress represents fertility in all forms.',
+                advice: 'Create beauty, nurture projects and relationships, connect with nature. This is a highly creative and abundant time.',
+                warning: 'Avoid overindulgence or smothering others with care. Balance nurturing with allowing independence.',
+                affirmation: 'I am abundant, creative, and naturally nurturing.'
+            },
+            {
+                name: 'The Sun',
+                teaching: 'Joy, success, and vitality shine upon you. The Sun brings clarity, optimism, and positive outcomes.',
+                advice: 'Celebrate your successes. Share your light with others. Embrace childlike joy and playfulness.',
+                warning: 'Don't let success make you arrogant. Remember those who helped you along the way.',
+                affirmation: 'I radiate joy, success, and positive energy.'
+            }
         ];
-        
-        // Moonology Oracle Data - Extended
-        const moonologyCards = [
-            { name: "New Moon in Aries", symbol: "🌑♈", message: "Bold new beginnings and fiery initiative", guidance: "Take decisive action on your dreams" },
-            { name: "Waxing Crescent", symbol: "🌒", message: "Your intentions are gaining momentum", guidance: "Stay focused and take small consistent steps" },
-            { name: "First Quarter Moon", symbol: "🌓", message: "Challenges test your commitment", guidance: "Push through obstacles with determination" },
-            { name: "Waxing Gibbous", symbol: "🌔", message: "Refinement and adjustment needed", guidance: "Fine-tune your approach and trust the process" },
-            { name: "Full Moon", symbol: "🌕", message: "Culmination and peak manifestation", guidance: "Celebrate achievements and release what's complete" },
-            { name: "Waning Gibbous", symbol: "🌖", message: "Gratitude and sharing wisdom", guidance: "Give thanks and share your insights with others" },
-            { name: "Last Quarter Moon", symbol: "🌗", message: "Release and forgiveness needed", guidance: "Let go of what no longer serves your growth" },
-            { name: "Waning Crescent", symbol: "🌘", message: "Rest and reflection time", guidance: "Retreat inward and prepare for new cycles" },
-            { name: "Lunar Eclipse", symbol: "🌑🔴", message: "Profound transformation and revelation", guidance: "Embrace major changes and trust divine timing" },
-            { name: "Solar Eclipse", symbol: "☀️🌑", message: "Powerful new beginnings emerge", guidance: "Step into your destiny with courage" },
-            { name: "Super Moon", symbol: "🌕✨", message: "Amplified intuition and psychic abilities", guidance: "Trust your inner knowing and spiritual gifts" },
-            { name: "Blue Moon", symbol: "🌕💙", message: "Rare magic and special opportunities", guidance: "Seize this unique moment for manifestation" },
-            { name: "Blood Moon", symbol: "🌕🔴", message: "Deep emotional healing and rebirth", guidance: "Allow old wounds to heal completely" },
-            { name: "Harvest Moon", symbol: "🌕🌾", message: "Reaping rewards of your efforts", guidance: "Gather the abundance you've cultivated" },
-            { name: "Wolf Moon", symbol: "🌕🐺", message: "Trust your primal instincts", guidance: "Honor your wild nature and authentic self" },
-            { name: "Pink Moon", symbol: "🌕🌸", message: "New growth and fresh possibilities", guidance: "Nurture emerging dreams with gentle care" }
-        ];
-        
-        // Kali Oracle Data - Extended
-        const kaliCards = [
-            { name: "Fierce Protection", symbol: "⚔️🔥", message: "Kali shields you from all negative forces", guidance: "Stand in your power and protect your sacred boundaries" },
-            { name: "Shadow Integration", symbol: "🖤✨", message: "Face your shadows with divine courage", guidance: "Embrace all aspects of yourself for complete wholeness" },
-            { name: "Destruction of Illusions", symbol: "💥🎭", message: "False beliefs are being demolished", guidance: "Release attachments to outdated stories about yourself" },
-            { name: "Divine Rage", symbol: "⚡🔥", message: "Your sacred anger fuels transformation", guidance: "Channel fierce energy into positive change and justice" },
-            { name: "Mother's Fierce Love", symbol: "💝⚔️", message: "Unconditional love with strong boundaries", guidance: "Love fiercely while protecting what matters most" },
-            { name: "Time of Endings", symbol: "⏰💀", message: "What must die for you to be reborn?", guidance: "Trust the timing of necessary endings" },
-            { name: "Truth Speaker", symbol: "👁️🗣️", message: "Your voice carries divine truth", guidance: "Speak your truth fearlessly, regardless of others' reactions" },
-            { name: "Warrior Queen", symbol: "👑⚔️", message: "Step into your sovereign power", guidance: "Lead with wisdom, strength, and compassionate authority" },
-            { name: "Cutting Attachments", symbol: "✂️🔗", message: "Kali severs unhealthy bonds", guidance: "Release toxic relationships and limiting connections" },
-            { name: "Dark Night Wisdom", symbol: "🌑🦉", message: "In darkness, deep wisdom emerges", guidance: "Trust the teaching power of difficult times" },
-            { name: "Sacred Rebellion", symbol: "🏴‍☠️✊", message: "Revolution against oppressive systems", guidance: "Rebel against anything that diminishes your spirit" },
-            { name: "Tantric Power", symbol: "🔥💋", message: "Embrace your raw creative energy", guidance: "Honor your sexuality and creative life force" },
-            { name: "Protective Mother", symbol: "🛡️👶", message: "Fierce protection of the innocent", guidance: "Defend those who cannot defend themselves" },
-            { name: "Death Goddess", symbol: "💀🌺", message: "Transformation through destruction", guidance: "Allow the old self to die for rebirth to occur" },
-            { name: "Dance of Destruction", symbol: "💃💥", message: "Creation through divine destruction", guidance: "Dance on the ashes of what no longer serves" },
-            { name: "Kali Ma's Blessing", symbol: "🙏🔥", message: "You are blessed by the Divine Mother", guidance: "Receive the fierce grace that transforms everything" }
-        ];
-        
-        // Tarot Spread Configurations - Enhanced
-        const spreadConfigs = {
-            single: { 
-                cards: 1, 
-                positions: ["Daily Guidance"],
-                description: "Single card for focused daily insight" 
-            },
-            three: { 
-                cards: 3, 
-                positions: ["Past Influences", "Present Situation", "Future Potential"],
-                description: "Classic three-card reading for timeline insight" 
-            },
-            celtic: { 
-                cards: 10, 
-                positions: [
-                    "Current Situation", "Challenge/Cross", "Distant Past/Foundation", 
-                    "Recent Past", "Possible Future", "Immediate Future", 
-                    "Your Approach", "External Influences", "Hopes & Fears", "Final Outcome"
-                ],
-                description: "Comprehensive 10-card life reading" 
-            },
-            love: { 
-                cards: 5, 
-                positions: ["Your Energy", "Partner's Energy", "Connection Between You", "What You Both Need", "Relationship Outcome"],
-                description: "Relationship dynamics and potential" 
-            },
-            career: { 
-                cards: 4, 
-                positions: ["Current Position", "Hidden Challenges", "Available Opportunities", "Recommended Path Forward"],
-                description: "Professional guidance and career direction" 
-            },
-            yesno: { 
-                cards: 1, 
-                positions: ["The Universe's Answer"],
-                description: "Clear yes/no guidance with underlying energies" 
-            }
-        };
-        
-        // Moon Spread Configurations - Enhanced
-        const moonSpreads = {
-            daily: {
-                cards: 1,
-                positions: ["Today's Lunar Message"],
-                description: "Single card lunar wisdom for today"
-            },
-            phase: {
-                cards: 3,
-                positions: ["Current Lunar Energy", "Challenge to Release", "Guidance Moving Forward"],
-                description: "Current moon phase reading"
-            },
-            cycle: {
-                cards: 8,
-                positions: [
-                    "New Moon - New Beginnings", "Waxing Crescent - Building Energy", 
-                    "First Quarter - Challenges", "Waxing Gibbous - Refinement",
-                    "Full Moon - Culmination", "Waning Gibbous - Gratitude",
-                    "Last Quarter - Release", "Waning Crescent - Rest"
-                ],
-                description: "Complete lunar cycle journey"
-            },
-            manifestation: {
-                cards: 4,
-                positions: ["Your Intention", "Action Required", "Potential Challenge", "Manifestation Outcome"],
-                description: "Lunar manifestation guidance"
-            }
-        };
-        
-        // Kali Spread Configurations - Enhanced
-        const kaliSpreads = {
-            daily: {
-                cards: 1,
-                positions: ["Kali's Daily Message"],
-                description: "Single fierce wisdom for today"
-            },
-            shadow: {
-                cards: 3,
-                positions: ["Hidden Shadow", "Shadow's Gift", "Integration Guidance"],
-                description: "Shadow work and integration"
-            },
-            transformation: {
-                cards: 5,
-                positions: ["What Must Die", "Destruction Process", "Dark Night Wisdom", "Rebirth Energy", "Your New Self"],
-                description: "Complete transformation journey"
-            },
-            warrior: {
-                cards: 7,
-                positions: [
-                    "Your Inner Warrior", "Battle You Face", "Weapons You Possess",
-                    "Allies Supporting You", "Challenge to Overcome", "Victory Achieved", "Warrior's Wisdom"
-                ],
-                description: "Complete warrior's journey"
-            }
-        };
-        
-        // Lucky Numbers by Life Path (Chaldean Method)
-        const luckyNumbersByLifePath = {
-            1: [1, 10, 19, 28, 37, 46, 55],
-            2: [2, 11, 20, 29, 38, 47, 56], 
-            3: [3, 12, 21, 30, 39, 48, 57],
-            4: [4, 13, 22, 31, 40, 49, 58],
-            5: [5, 14, 23, 32, 41, 50, 59],
-            6: [6, 15, 24, 33, 42, 51, 60],
-            7: [7, 16, 25, 34, 43, 52, 61],
-            8: [8, 17, 26, 35, 44, 53, 62],
-            9: [9, 18, 27, 36, 45, 54, 63],
-            11: [11, 29, 38, 47, 56],
-            22: [22, 40, 49, 58],
-            33: [33, 51, 60, 69]
-        };
-        
-        // Numerology Data - Enhanced
-        const numerologyMeanings = {
-            1: {
-                trait: "Leadership, Independence, Pioneering Spirit",
-                description: "Natural born leaders with strong drive and determination. Independent thinkers who forge their own path and inspire others to follow.",
-                lucky_color: "Red, Orange, Gold",
-                lucky_day: "Sunday",
-                lucky_numbers: "1, 10, 19, 28",
-                compatible: "3, 5, 6, 9",
-                career: "CEO, Entrepreneur, Inventor, Political Leader",
-                relationships: "Need partners who respect their independence and share their ambitions"
-            },
-            2: {
-                trait: "Cooperation, Diplomacy, Sensitivity",
-                description: "Peacemakers with strong intuition and emotional intelligence. Natural diplomats who excel at bringing harmony to any situation.",
-                lucky_color: "White, Cream, Silver",
-                lucky_day: "Monday",
-                lucky_numbers: "2, 11, 20, 29",
-                compatible: "1, 4, 6, 8",
-                career: "Counselor, Diplomat, Teacher, Mediator",
-                relationships: "Seek deep emotional connections and value partnership above all"
-            },
-            3: {
-                trait: "Creativity, Expression, Joy",
-                description: "Creative souls with artistic talents and natural charisma. Excellent communicators who spread joy and inspire others through their self-expression.",
-                lucky_color: "Yellow, Gold, Orange",
-                lucky_day: "Thursday",
-                lucky_numbers: "3, 12, 21, 30",
-                compatible: "1, 5, 7, 9",
-                career: "Artist, Writer, Entertainer, Designer",
-                relationships: "Need partners who appreciate their creativity and give them space to shine"
-            },
-            4: {
-                trait: "Stability, Discipline, Hard Work",
-                description: "Practical builders who create solid foundations through methodical effort. Reliable and trustworthy with a strong sense of duty and responsibility.",
-                lucky_color: "Blue, Gray, Brown",
-                lucky_day: "Saturday, Sunday",
-                lucky_numbers: "4, 13, 22, 31",
-                compatible: "2, 6, 7, 8",
-                career: "Engineer, Architect, Accountant, Manager",
-                relationships: "Value stability and commitment, make loyal long-term partners"
-            },
-            5: {
-                trait: "Freedom, Adventure, Versatility",
-                description: "Free spirits who crave adventure, change, and new experiences. Highly adaptable with insatiable curiosity about the world and its possibilities.",
-                lucky_color: "Green, Turquoise, Blue",
-                lucky_day: "Wednesday",
-                lucky_numbers: "5, 14, 23, 32",
-                compatible: "1, 3, 7, 9",
-                career: "Travel Guide, Journalist, Sales, Explorer",
-                relationships: "Need freedom and variety, thrive with adventurous partners"
-            },
-            6: {
-                trait: "Responsibility, Nurturing, Harmony",
-                description: "Natural caregivers with strong sense of family and community responsibility. Create beauty and harmony wherever they go, often putting others' needs first.",
-                lucky_color: "Pink, Blue, Green",
-                lucky_day: "Friday",
-                lucky_numbers: "6, 15, 24, 33",
-                compatible: "1, 2, 4, 8",
-                career: "Nurse, Social Worker, Interior Designer, Chef",
-                relationships: "Devoted partners who create warm, loving homes and families"
-            },
-            7: {
-                trait: "Spirituality, Analysis, Wisdom",
-                description: "Seekers of truth with deep analytical minds and spiritual inclinations. Introspective thinkers who seek meaning beyond material concerns.",
-                lucky_color: "Purple, Violet, Indigo",
-                lucky_day: "Monday",
-                lucky_numbers: "7, 16, 25, 34",
-                compatible: "3, 4, 5, 9",
-                career: "Researcher, Philosopher, Scientist, Spiritual Teacher",
-                relationships: "Need intellectual connection and understanding of their need for solitude"
-            },
-            8: {
-                trait: "Power, Success, Material Achievement",
-                description: "Ambitious achievers with strong business acumen and natural authority. Capable of great material success through determination and strategic thinking.",
-                lucky_color: "Black, Dark Blue, Purple",
-                lucky_day: "Saturday",
-                lucky_numbers: "8, 17, 26, 35",
-                compatible: "2, 4, 6, 9",
-                career: "Business Executive, Financial Advisor, Real Estate, Banking",
-                relationships: "Attracted to successful partners who share their ambitions"
-            },
-            9: {
-                trait: "Humanitarianism, Compassion, Universal Love",
-                description: "Old souls with deep compassion for humanity and strong desire to serve the greater good. Natural healers and teachers with global consciousness.",
-                lucky_color: "Gold, Red, Crimson",
-                lucky_day: "Tuesday",
-                lucky_numbers: "9, 18, 27, 36",
-                compatible: "1, 3, 5, 8",
-                career: "Humanitarian Worker, Healer, Teacher, Activist",
-                relationships: "Seek partners who share their humanitarian values and vision"
-            },
-            11: {
-                trait: "Master Number: Intuition, Inspiration, Spiritual Messenger",
-                description: "Highly intuitive spiritual messengers with the ability to inspire and uplift others. Natural healers and visionaries with heightened psychic abilities.",
-                lucky_color: "Silver, White, Platinum",
-                lucky_day: "Monday",
-                lucky_numbers: "11, 29, 38, 47",
-                compatible: "2, 6, 9",
-                career: "Spiritual Teacher, Healer, Counselor, Inspirational Speaker",
-                relationships: "Need partners who understand their spiritual nature and mission"
-            },
-            22: {
-                trait: "Master Number: Master Builder, Practical Visionary",
-                description: "Master builders who can turn the biggest dreams into concrete reality. Combine practical skills with visionary thinking to create lasting global impact.",
-                lucky_color: "Coral, Red, Gold",
-                lucky_day: "Sunday",
-                lucky_numbers: "22, 40, 49, 58",
-                compatible: "4, 6, 8",
-                career: "International Business, Architecture, Environmental Science, Global Organizations",
-                relationships: "Need partners who support their large-scale visions and understand their mission"
-            },
-            33: {
-                trait: "Master Number: Master Teacher, Universal Love",
-                description: "Master teachers devoted to uplifting humanity through unconditional love and service. Embody the highest expression of compassion and healing energy.",
-                lucky_color: "Gold, Copper, Sea Green",
-                lucky_day: "Thursday",
-                lucky_numbers: "33, 51, 60, 69",
-                compatible: "6, 9, 11",
-                career: "Master Teacher, Spiritual Leader, Global Humanitarian, Universal Healer",
-                relationships: "Attract partners ready for deep spiritual growth and service"
-            }
-        };
-        
-        // Global Variables
-        let selectedTarotCards = [];
-        let shuffledDeck = [...tarotCards];
-        let drawnMoonCards = [];
-        let drawnKaliCards = [];
-        let drawMode = {'tarot': 'auto', 'moonology': 'auto', 'kali': 'auto'}; // separate modes for each oracle
-        let manualSelectedCards = [];
-        let requiredCardCount = 1;
-        let currentOracle = 'tarot';
-        
-        // Navigation System
-        function initializeNavigation() {
-            document.querySelectorAll('.nav-btn').forEach(btn => {
-                btn.addEventListener('click', () => {
-                    const sectionId = btn.dataset.section;
-                    showSection(sectionId);
-                    
-                    document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-                    btn.classList.add('active');
-                });
-            });
-        }
-        
-        function showSection(sectionId) {
-            document.querySelectorAll('.section').forEach(section => {
-                section.classList.remove('active');
-            });
-            document.getElementById(sectionId).classList.add('active');
-        }
-        
-        // Enhanced Tarot System
-        function shuffleDeck() {
-            for (let i = shuffledDeck.length - 1; i > 0; i--) {
-                const j = Math.floor(Math.random() * (i + 1));
-                [shuffledDeck[i], shuffledDeck[j]] = [shuffledDeck[j], shuffledDeck[i]];
-            }
-        }
-        
-        // Enhanced shuffle animation with oracle-specific symbols
-        function showShuffleAnimation(oracle = 'tarot') {
-            return new Promise((resolve) => {
-                const animationDiv = document.createElement('div');
-                animationDiv.className = 'shuffle-animation';
-                
-                const shuffleText = document.createElement('div');
-                shuffleText.className = 'shuffle-text';
-                
-                const symbols = {
-                    'tarot': '✨',
-                    'moonology': '🌙',
-                    'kali': '🔥'
-                };
-                
-                const texts = {
-                    'tarot': '🔮 Shuffling the Cards... ✨',
-                    'moonology': '🌙 Shuffling Lunar Cards... ✨',
-                    'kali': '🔥 Channeling Kali\'s Power... ✨'
-                };
-                
-                shuffleText.textContent = texts[oracle] || texts['tarot'];
-                animationDiv.appendChild(shuffleText);
-                
-                // Create 15 animated cards with oracle-specific symbols
-                for (let i = 0; i < 15; i++) {
-                    const card = document.createElement('div');
-                    card.className = 'shuffle-card';
-                    card.textContent = symbols[oracle] || symbols['tarot'];
-                    card.style.left = Math.random() * 100 + '%';
-                    card.style.top = Math.random() * 100 + '%';
-                    card.style.animation = `cardShuffle 2.5s ease-in-out ${i * 0.1}s`;
-                    animationDiv.appendChild(card);
-                }
-                
-                document.body.appendChild(animationDiv);
-                
-                setTimeout(() => {
-                    document.body.removeChild(animationDiv);
-                    resolve();
-                }, 2500);
-            });
-        }
-        
-        // Manual card selection functions
-        function startManualCardSelection() {
-            const spreadType = document.getElementById('spreadType').value;
-            const config = spreadConfigs[spreadType];
-            requiredCardCount = config.cards;
-            
-            // Reset selection
-            manualSelectedCards = [];
-            updateSelectionCounter();
-            
-            // Show deck container
-            const deckContainer = document.getElementById('cardDeckContainer');
-            const cardDeck = document.getElementById('cardDeck');
-            deckContainer.classList.add('active');
-            
-            // Create 20 face-down cards
-            cardDeck.innerHTML = '';
-            for (let i = 0; i < 20; i++) {
-                const card = document.createElement('div');
-                card.className = 'deck-card';
-                card.dataset.cardIndex = i;
-                card.addEventListener('click', () => selectCard(i));
-                cardDeck.appendChild(card);
-            }
-            
-            // Hide results and show deck
-            document.getElementById('tarotResults').classList.add('hidden');
-            deckContainer.scrollIntoView({ behavior: 'smooth' });
-        }
-        
-        function selectCard(index) {
-            const cardElement = document.querySelector(`[data-card-index="${index}"]`);
-            
-            if (manualSelectedCards.includes(index)) {
-                // Deselect card
-                manualSelectedCards = manualSelectedCards.filter(i => i !== index);
-                cardElement.classList.remove('selected');
-            } else {
-                // Select card (if not at limit)
-                if (manualSelectedCards.length < requiredCardCount) {
-                    manualSelectedCards.push(index);
-                    cardElement.classList.add('selected');
-                }
-            }
-            
-            updateSelectionCounter();
-            updateRevealButton();
-        }
-        
-        function updateSelectionCounter() {
-            const counter = document.getElementById('selectionCounter');
-            counter.textContent = `Cards selected: ${manualSelectedCards.length} / ${requiredCardCount}`;
-        }
-        
-        function updateRevealButton() {
-            const revealBtn = document.getElementById('revealBtn');
-            if (manualSelectedCards.length === requiredCardCount) {
-                revealBtn.classList.add('active');
-            } else {
-                revealBtn.classList.remove('active');
-            }
-        }
-        
-        function confirmCardSelection() {
-            if (manualSelectedCards.length !== requiredCardCount) return;
-            
-            const spreadType = document.getElementById('spreadType').value;
-            const readingDepth = document.getElementById('readingDepth').value;
-            const config = spreadConfigs[spreadType];
-            
-            // Create selected cards array
-            selectedTarotCards = [];
-            shuffleDeck();
-            
-            manualSelectedCards.forEach((cardIndex, i) => {
-                const card = shuffledDeck[cardIndex % shuffledDeck.length];
-                const isReversed = Math.random() < 0.3;
-                selectedTarotCards.push({
-                    ...card,
-                    reversed: isReversed,
-                    position: config.positions[i]
-                });
-            });
-            
-            // Hide deck and show reading
-            document.getElementById('cardDeckContainer').classList.remove('active');
-            displayTarotReading(selectedTarotCards, readingDepth, spreadType);
-        }
-        
-        async function startTarotReading() {
-            const spreadType = document.getElementById('spreadType').value;
-            const readingDepth = document.getElementById('readingDepth').value;
-            
-            // Show enhanced shuffle animation
-            const btn = document.getElementById('startReading');
-            const originalText = btn.innerHTML;
-            btn.innerHTML = '🔮 Shuffling... <span class="loading"></span>';
-            btn.disabled = true;
-            
-            // Show shuffle animation for auto draw only
-            if (drawMode['tarot'] === 'auto') {
-                await showShuffleAnimation('tarot');
-            }
-            
-            // Determine draw mode
-            if (drawMode['tarot'] === 'manual') {
-                startManualCardSelection();
-            } else {
-                drawTarotSpread(spreadType, readingDepth);
-            }
-            
-            btn.innerHTML = originalText;
-            btn.disabled = false;
-        }
-        
-        function drawTarotSpread(spreadType, depth) {
-            const config = spreadConfigs[spreadType];
-            if (!config) return;
-            
-            shuffleDeck();
-            selectedTarotCards = [];
-            
-            for (let i = 0; i < config.cards; i++) {
-                const card = shuffledDeck[i];
-                const isReversed = Math.random() < 0.3; // 30% chance of reversal
-                selectedTarotCards.push({
-                    ...card,
-                    reversed: isReversed,
-                    position: config.positions[i]
+
+        let currentUser = null;
+        let readingHistory = [];
+
+        // Login Handler
+        document.addEventListener('DOMContentLoaded', function() {
+            const loginForm = document.getElementById('loginForm');
+
+            if (loginForm) {
+                loginForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    handleLogin();
                 });
             }
-            
-            displayTarotReading(selectedTarotCards, depth, spreadType);
-        }
-        
-        function displayTarotReading(cards, depth, spreadType) {
-            const resultsDiv = document.getElementById('tarotResults');
-            const cardsDiv = document.getElementById('drawnCards');
-            const interpretationDiv = document.getElementById('interpretation');
-            
-            resultsDiv.classList.remove('hidden');
-            
-            // Display individual cards
-            cardsDiv.innerHTML = '';
-            cards.forEach((card, index) => {
-                const cardElement = document.createElement('div');
-                cardElement.className = 'reading-card';
-                
-                const interpretation = card.reversed ? card.reversed : card.upright;
-                const orientation = card.reversed ? 'Reversed ↓' : 'Upright ↑';
-                
-                let cardHTML = `
-                    <div class="card">
-                        <div class="reading-position">${card.position}</div>
-                        <div style="font-size: 3rem; margin: 1rem 0; ${card.reversed ? 'transform: rotate(180deg);' : ''}">${card.symbol}</div>
-                        <h3 style="color: var(--color-accent); margin: 1rem 0;">${card.name}</h3>
-                        <p style="color: var(--color-text-accent); font-weight: 500; margin-bottom: 1rem;">${orientation}</p>
-                `;
-                
-                if (depth === 'quick') {
-                    cardHTML += `
-                        <div class="interpretation">
-                            <p><strong>Meaning:</strong> ${interpretation}</p>
-                        </div>
-                    `;
-                } else if (depth === 'standard') {
-                    cardHTML += `
-                        <div class="interpretation">
-                            <p><strong>Meaning:</strong> ${interpretation}</p>
-                            <p style="margin-top: 0.5rem;"><strong>Guidance:</strong> ${card.description}</p>
-                            ${card.element ? `<p style="margin-top: 0.5rem;"><strong>Element:</strong> ${card.element}</p>` : ''}
-                        </div>
-                    `;
-                } else { // deep
-                    const guidance = getCardGuidance(card);
-                    const advice = getCardAdvice(card);
-                    const warning = getCardWarning(card);
-                    const affirmation = getCardAffirmation(card);
-                    
-                    cardHTML += `
-                        <div class="interpretation">
-                            <p><strong>Meaning:</strong> ${interpretation}</p>
-                            <p style="margin-top: 0.5rem;"><strong>Deep Insight:</strong> ${card.description}</p>
-                            ${card.element ? `<p style="margin-top: 0.5rem;"><strong>Element:</strong> ${card.element}</p>` : ''}
-                            <p style="margin-top: 0.5rem;"><strong>Position ${index + 1} Energy:</strong> ${generatePositionGuidance(card, index, spreadType)}</p>
-                        </div>
-                        <div class="detailed-guidance">
-                            <h4 style="color: var(--color-accent); margin-bottom: 1rem;">🔮 Complete Card Guidance</h4>
-                            <div class="guidance-section">
-                                <p><strong>💫 What This Card Teaches You:</strong></p>
-                                <p style="margin-top: 0.5rem;">${guidance}</p>
-                            </div>
-                            <div class="guidance-section">
-                                <p><strong>🎯 Actionable Advice:</strong></p>
-                                <p style="margin-top: 0.5rem;">${advice}</p>
-                            </div>
-                            <div class="guidance-section">
-                                <p><strong>⚠️ What to Watch Out For:</strong></p>
-                                <p style="margin-top: 0.5rem;">${warning}</p>
-                            </div>
-                            <div class="guidance-section">
-                                <p><strong>✨ Affirmation for This Card:</strong></p>
-                                <p style="margin-top: 0.5rem; font-style: italic; color: var(--color-accent);">${affirmation}</p>
-                            </div>
-                        </div>
-                    `;
-                }
-                
-                cardHTML += '</div>';
-                cardElement.innerHTML = cardHTML;
-                cardsDiv.appendChild(cardElement);
-            });
-            
-            // Overall interpretation for standard and deep readings
-            if (depth !== 'quick') {
-                const overallGuidance = generateOverallGuidance(cards, spreadType, depth);
-                interpretationDiv.innerHTML = `
-                    <div class="card">
-                        <h3 style="color: var(--color-accent); margin-bottom: 1rem;">🔮 Overall Reading Analysis</h3>
-                        <div style="background: rgba(255, 215, 0, 0.1); padding: 1.5rem; border-radius: 10px; border: 1px solid rgba(255, 215, 0, 0.3);">
-                            ${overallGuidance}
-                        </div>
-                    </div>
-                `;
-            } else {
-                interpretationDiv.innerHTML = '';
+
+            // Check if already logged in
+            const savedUser = localStorage.getItem('currentUser');
+            if (savedUser) {
+                currentUser = JSON.parse(savedUser);
+                showApp();
             }
-            
-            resultsDiv.scrollIntoView({ behavior: 'smooth' });
-        }
-        
-        function generatePositionGuidance(card, position, spreadType) {
-            const positionGuidance = {
-                single: ["This card reveals the core energy surrounding you today."],
-                three: [
-                    "Past influences that shaped your current situation.",
-                    "The present moment and what requires your attention now.",
-                    "Potential future outcomes based on current trajectory."
-                ],
-                celtic: [
-                    "Your current situation and the energy surrounding you.",
-                    "The main challenge or obstacle you're facing.",
-                    "Foundation influences from your distant past.",
-                    "Recent events that led to your current situation.",
-                    "One possible future outcome if current trends continue.",
-                    "What's likely to manifest in the immediate future.",
-                    "Your approach and attitude toward the situation.",
-                    "External factors and other people's influence.",
-                    "Your deepest hopes and fears about the outcome.",
-                    "The most likely final outcome and resolution."
-                ]
-            };
-            
-            const guidance = positionGuidance[spreadType];
-            return guidance && guidance[position] ? guidance[position] : "This card brings important energy to your reading.";
-        }
-        
-        function generateOverallGuidance(cards, spreadType, depth) {
-            const elementCounts = { Fire: 0, Water: 0, Air: 0, Earth: 0 };
-            const majorCount = cards.filter(card => typeof card.number === 'number').length;
-            const courtCards = cards.filter(card => ['Page', 'Knight', 'Queen', 'King'].includes(card.number)).length;
-            const reversedCount = cards.filter(card => card.reversed).length;
-            
-            cards.forEach(card => {
-                if (card.element) elementCounts[card.element]++;
-            });
-            
-            const dominantElement = Object.keys(elementCounts).reduce((a, b) => 
-                elementCounts[a] > elementCounts[b] ? a : b
-            );
-            
-            let guidance = `<p><strong>Spread Overview:</strong> Your ${spreadType} reading reveals `;
-            
-            if (majorCount > cards.length / 2) {
-                guidance += "significant life themes and spiritual lessons at play. Major arcana dominance suggests this is an important time of personal growth and transformation.";
-            } else {
-                guidance += "practical day-to-day influences and personal choices shaping your path.";
-            }
-            
-            guidance += "</p>";
-            
-            if (elementCounts[dominantElement] > 1) {
-                const elementMeanings = {
-                    Fire: "passion, creativity, action, and spiritual energy are highlighted. This is a time for bold moves and inspired action.",
-                    Water: "emotions, intuition, relationships, and psychic sensitivity are key themes. Trust your feelings and inner knowing.",
-                    Air: "thoughts, communication, learning, and mental challenges are prominent. Focus on clear thinking and honest communication.",
-                    Earth: "practical matters, resources, health, and material concerns dominate. Ground yourself in practical action."
-                };
-                guidance += `<p><strong>Elemental Energy:</strong> ${elementMeanings[dominantElement]}</p>`;
-            }
-            
-            if (reversedCount > 0) {
-                guidance += `<p><strong>Reversed Cards:</strong> ${reversedCount} reversed card${reversedCount > 1 ? 's' : ''} suggest${reversedCount === 1 ? 's' : ''} internal work, delays, or the need to look within for answers.</p>`;
-            }
-            
-            if (depth === 'deep') {
-                guidance += generateDeepAnalysis(cards, spreadType);
-            }
-            
-            return guidance;
-        }
-        
-        function generateDeepAnalysis(cards, spreadType) {
-            let analysis = '<p><strong>Deep Soul Guidance:</strong> ';
-            
-            // Analyze card combinations
-            if (cards.length >= 3) {
-                const firstCard = cards[0];
-                const lastCard = cards[cards.length - 1];
-                
-                analysis += `The journey from ${firstCard.name} to ${lastCard.name} shows a transformation from ${firstCard.upright.split(',')[0].toLowerCase()} to ${lastCard.upright.split(',')[0].toLowerCase()}. `;
-            }
-            
-            analysis += 'The universe is guiding you through this experience to help you grow into your highest potential.</p>';
-            
-            analysis += '<p><strong>Action Steps:</strong> Integrate these insights through meditation, journaling, or discussing with a trusted advisor. Pay attention to synchronicities over the next few days that confirm these messages.</p>';
-            
-            return analysis;
-        }
-        
-        function resetTarotReading() {
-            selectedTarotCards = [];
-            manualSelectedCards = [];
-            document.getElementById('tarotResults').classList.add('hidden');
-            document.getElementById('cardDeckContainer').classList.remove('active');
-        }
-        
-        // Detailed Card Interpretation Functions
-        function getCardGuidance(card) {
-            const guidanceMap = {
-                'The Fool': 'This card teaches you to trust in new beginnings and embrace the unknown with innocent wonder. Life is calling you to take a leap of faith and step into unexplored territory with an open heart.',
-                'The Magician': 'You are being shown that you have all the tools and resources needed to manifest your desires. The divine spark within you can transform thoughts into reality through focused intention.',
-                'The High Priestess': 'This card reveals the importance of trusting your intuition and connecting with your inner wisdom. The answers you seek lie within the quiet depths of your soul.',
-                'The Empress': 'You are learning to nurture and create from a place of abundant love. This card teaches the power of feminine creative energy and natural fertility in all aspects of life.',
-                'The Emperor': 'This card shows you the importance of structure, discipline, and taking authoritative action. You are learning to create order and stability through strong leadership.',
-                'The Hierophant': 'You are being taught about the value of spiritual wisdom and traditional knowledge. This card represents learning from established systems and spiritual teachers.',
-                'The Lovers': 'This card teaches about the importance of choice, harmony, and authentic relationships. You are learning to align your actions with your deepest values.',
-                'The Chariot': 'You are being shown how to harness your willpower and maintain focus to achieve victory. This card teaches triumphant progress through determination.',
-                'Strength': 'This card reveals that true power comes from gentle courage and compassion. You are learning to influence through love rather than force.',
-                'The Hermit': 'You are being taught the value of solitude and inner reflection. This card shows that wisdom comes from looking within and seeking your own truth.',
-                'Wheel of Fortune': 'This card teaches about the cyclical nature of life and the importance of accepting change. You are learning to trust in divine timing and universal flow.',
-                'Justice': 'You are being shown the importance of balance, fairness, and taking responsibility for your actions. This card teaches about karmic law and universal justice.',
-                'The Hanged Man': 'This card teaches the wisdom of surrender and seeing situations from a new perspective. You are learning that sometimes progress requires letting go.',
-                'Death': 'You are being taught about the necessity of endings and transformation. This card shows that profound change leads to spiritual rebirth and growth.',
-                'Temperance': 'This card teaches about balance, patience, and the middle path. You are learning to blend opposing forces harmoniously in your life.',
-                'The Devil': 'You are being shown your own chains and limitations. This card teaches about recognizing illusions and breaking free from what binds you.',
-                'The Tower': 'This card teaches that sometimes destruction is necessary for rebuilding. You are learning that sudden change, though shocking, clears space for truth.',
-                'The Star': 'You are being taught to maintain hope and trust in divine guidance. This card shows that inspiration and healing come after difficult times.',
-                'The Moon': 'This card teaches you to navigate illusion and trust your intuition. You are learning to see beyond surface appearances to deeper truths.',
-                'The Sun': 'You are being shown the power of joy, vitality, and positive energy. This card teaches about celebrating life and expressing your authentic self.',
-                'Judgement': 'This card teaches about spiritual awakening and answering your higher calling. You are learning to release the past and embrace your true purpose.',
-                'The World': 'You are being taught about completion and integration. This card shows that you have successfully learned important life lessons and achieved wholeness.'
-            };
-            
-            return guidanceMap[card.name] || 'This card brings important spiritual guidance and lessons for your current journey.';
-        }
-        
-        function getCardAdvice(card) {
-            const adviceMap = {
-                'The Fool': 'Take that leap of faith you\'ve been considering. Start something new today, even if it\'s just a small step. Trust your beginner\'s mind and approach situations with fresh eyes.',
-                'The Magician': 'Clarify your intentions and take concrete action toward your goals. Use all resources available to you - skills, connections, and opportunities. Focus your energy like a laser beam.',
-                'The High Priestess': 'Spend time in quiet meditation or reflection. Trust your first instincts about people and situations. Pay attention to your dreams and synchronicities.',
-                'The Empress': 'Nurture yourself and others with loving care. Create something beautiful or meaningful. Connect with nature and allow your creativity to flow freely.',
-                'The Emperor': 'Take charge of your situation with confidence. Create structure and order in chaotic areas of your life. Stand firm in your boundaries and decisions.',
-                'The Hierophant': 'Seek guidance from a mentor, teacher, or spiritual advisor. Study traditional wisdom or established practices. Consider joining a group or community.',
-                'The Lovers': 'Make choices that align with your authentic values. Communicate honestly in your relationships. Choose love over fear in all situations.',
-                'The Chariot': 'Stay focused on your goals despite obstacles. Move forward with determination and confidence. Balance opposing forces through strong willpower.',
-                'Strength': 'Approach challenges with gentle patience and inner calm. Show compassion to yourself and others. Use persuasion rather than force to influence outcomes.',
-                'The Hermit': 'Take time for solitude and self-reflection. Seek answers within rather than from external sources. Trust your inner wisdom and guidance.',
-                'Wheel of Fortune': 'Embrace changes as opportunities for growth. Trust that what\'s happening is part of a larger divine plan. Adapt flexibly to shifting circumstances.',
-                'Justice': 'Take responsibility for your actions and their consequences. Seek fair and balanced solutions. Make decisions based on truth and integrity.',
-                'The Hanged Man': 'Practice patience and surrender control of outcomes. Look at your situation from a completely different angle. Sometimes waiting is the right action.',
-                'Death': 'Let go of what no longer serves your highest good. Embrace the transformation process completely. Make space for new growth by releasing the old.',
-                'Temperance': 'Practice moderation and seek the middle way. Blend different aspects of your life harmoniously. Be patient with gradual progress.',
-                'The Devil': 'Identify what chains or limits you, then take steps to break free. Question your attachments and addictions. Reclaim your personal power.',
-                'The Tower': 'Accept sudden changes with grace and courage. Look for the hidden blessings in disruption. Build new foundations on truth rather than illusion.',
-                'The Star': 'Maintain hope and faith in your dreams. Share your gifts with others. Take time for healing and spiritual renewal.',
-                'The Moon': 'Trust your intuition over logic in this situation. Look beyond surface appearances to hidden truths. Face your fears with courage.',
-                'The Sun': 'Express your authentic self with joy and confidence. Celebrate your achievements and share your happiness. Approach life with childlike wonder.',
-                'Judgement': 'Listen to your higher calling and take action on it. Forgive yourself and others for past mistakes. Step into your true purpose with courage.',
-                'The World': 'Celebrate your achievements and integration of lessons learned. Share your wisdom with others. Prepare for new cycles of growth.'
-            };
-            
-            return adviceMap[card.name] || 'Follow the wisdom this card brings and take inspired action in alignment with its energy.';
-        }
-        
-        function getCardWarning(card) {
-            const warningMap = {
-                'The Fool': 'Avoid reckless impulsiveness or naivety. Don\'t ignore practical considerations entirely. Be mindful of trusting others too quickly without discernment.',
-                'The Magician': 'Beware of manipulation or using your power for selfish gain. Don\'t scatter your energy in too many directions. Avoid ego inflation.',
-                'The High Priestess': 'Don\'t retreat too far from the world or become overly passive. Avoid keeping important secrets that harm others. Balance intuition with practical action.',
-                'The Empress': 'Watch for overindulgence or becoming too dependent on others. Avoid neglecting practical responsibilities. Don\'t lose yourself in nurturing others.',
-                'The Emperor': 'Beware of becoming overly controlling or rigid. Don\'t dominate others through force. Avoid stubbornness that prevents necessary change.',
-                'The Hierophant': 'Don\'t blindly follow authority without questioning. Avoid rigid thinking or dogmatic beliefs. Be careful of conformity that suppresses your individuality.',
-                'The Lovers': 'Avoid making important decisions based purely on emotion. Don\'t ignore red flags in relationships. Watch for codependency or losing yourself in others.',
-                'The Chariot': 'Beware of aggressive or reckless behavior. Don\'t try to control everything through force. Avoid letting conflicting desires tear you apart.',
-                'Strength': 'Don\'t suppress your power or become a doormat. Avoid being overly passive when action is needed. Watch for self-doubt undermining your confidence.',
-                'The Hermit': 'Avoid isolating yourself too completely from others. Don\'t become bitter or overly critical. Watch for excessive self-analysis that leads nowhere.',
-                'Wheel of Fortune': 'Don\'t become complacent during good times. Avoid resisting necessary changes. Watch for gambling or taking unnecessary risks.',
-                'Justice': 'Beware of being overly harsh or judgmental. Don\'t ignore the emotional aspects of situations. Avoid perfectionism that prevents action.',
-                'The Hanged Man': 'Don\'t become stuck in endless waiting or indecision. Avoid martyrdom or unnecessary sacrifice. Watch for depression or victim mentality.',
-                'Death': 'Don\'t resist necessary changes out of fear. Avoid clinging to the past when it\'s time to move forward. Watch for depression during transition periods.',
-                'Temperance': 'Avoid extremes or impatient rushing of natural processes. Don\'t suppress important emotions in the name of balance. Watch for spiritual bypassing.',
-                'The Devil': 'Be aware of addictions, materialism, or toxic patterns. Don\'t blame others for your own choices. Avoid staying in situations that diminish your spirit.',
-                'The Tower': 'Don\'t ignore warning signs of impending change. Avoid building your life on false foundations. Watch for resistance that makes change more traumatic.',
-                'The Star': 'Don\'t become overly idealistic or unrealistic. Avoid spiritual bypassing of practical concerns. Watch for false hope that prevents necessary action.',
-                'The Moon': 'Beware of illusions, deception, or self-delusion. Don\'t let fear paralyze you. Avoid being overly influenced by others\' projections.',
-                'The Sun': 'Watch for overconfidence or ignoring potential problems. Don\'t become arrogant or insensitive to others. Avoid burning out from too much activity.',
-                'Judgement': 'Don\'t be overly critical of yourself or others. Avoid ignoring your true calling out of fear. Watch for spiritual pride or superiority.',
-                'The World': 'Don\'t rest on your laurels or become complacent. Avoid thinking you\'ve learned everything. Watch for disconnection from continuous growth.'
-            };
-            
-            return warningMap[card.name] || 'Be mindful of this card\'s shadow aspects and maintain balance in how you express its energy.';
-        }
-        
-        function getCardAffirmation(card) {
-            const affirmationMap = {
-                'The Fool': 'I trust in new beginnings and embrace the unknown with joy and wonder.',
-                'The Magician': 'I have all the tools I need to manifest my highest dreams into reality.',
-                'The High Priestess': 'I trust my intuition and access infinite wisdom from within.',
-                'The Empress': 'I create abundance and beauty through my loving, nurturing energy.',
-                'The Emperor': 'I create order and stability through wise and compassionate leadership.',
-                'The Hierophant': 'I honor wisdom traditions while maintaining my authentic spiritual path.',
-                'The Lovers': 'I make choices aligned with love and my deepest values.',
-                'The Chariot': 'I move forward with determination and achieve victory through focused will.',
-                'Strength': 'I influence the world through gentle courage and compassionate power.',
-                'The Hermit': 'I find wisdom and truth in quiet contemplation and inner knowing.',
-                'Wheel of Fortune': 'I trust the divine timing and flow of life\'s natural cycles.',
-                'Justice': 'I create balance and fairness through truth and integrity.',
-                'The Hanged Man': 'I surrender control and find wisdom in new perspectives.',
-                'Death': 'I embrace transformation and allow my highest self to be reborn.',
-                'Temperance': 'I find perfect balance and harmony in all aspects of my life.',
-                'The Devil': 'I recognize my chains and choose freedom from all that limits me.',
-                'The Tower': 'I embrace change as a pathway to truth and authentic living.',
-                'The Star': 'I maintain hope and trust in divine guidance and healing.',
-                'The Moon': 'I navigate illusions with wisdom and trust my inner knowing.',
-                'The Sun': 'I radiate joy, vitality, and authentic self-expression.',
-                'Judgement': 'I answer my highest calling and step into my true purpose.',
-                'The World': 'I celebrate my achievements and embrace wholeness and completion.'
-            };
-            
-            return affirmationMap[card.name] || 'I embrace the wisdom and energy this card brings to my life.';
-        }
-        
-        // Enhanced Numerology System
-        function calculateAllNumerology(name, birthDate) {
-            const results = {};
-            
-            // Core Numbers
-            results.lifePath = calculateLifePathNumber(birthDate);
-            results.expression = calculateExpressionNumber(name);
-            results.soulUrge = calculateSoulUrgeNumber(name);
-            results.personality = calculatePersonalityNumber(name);
-            
-            // Additional Numbers
-            results.birthDay = calculateBirthDayNumber(birthDate);
-            results.maturity = calculateMaturityNumber(results.lifePath, results.expression);
-            results.personalYear = calculatePersonalYear(birthDate);
-            results.personalMonth = calculatePersonalMonth(birthDate);
-            results.personalDay = calculatePersonalDay(birthDate);
-            
-            // Challenge Numbers
-            results.challenge1 = calculateChallengeNumber(birthDate, 1);
-            results.challenge2 = calculateChallengeNumber(birthDate, 2);
-            results.challenge3 = calculateChallengeNumber(birthDate, 3);
-            
-            // Additional Insights
-            results.attitude = calculateAttitudeNumber(birthDate);
-            results.power = calculatePowerNumber(name, birthDate);
-            
-            return results;
-        }
-        
-        function getLetterValue(letter) {
-            const mapping = {
-                'A': 1, 'B': 2, 'C': 3, 'D': 4, 'E': 5, 'F': 6, 'G': 7, 'H': 8, 'I': 9,
-                'J': 1, 'K': 2, 'L': 3, 'M': 4, 'N': 5, 'O': 6, 'P': 7, 'Q': 8, 'R': 9,
-                'S': 1, 'T': 2, 'U': 3, 'V': 4, 'W': 5, 'X': 6, 'Y': 7, 'Z': 8
-            };
-            return mapping[letter.toUpperCase()] || 0;
-        }
-        
-        function reduceToSingleDigit(num) {
-            if (num === 11 || num === 22 || num === 33) return num;
-            
-            while (num > 9) {
-                num = num.toString().split('').reduce((sum, digit) => sum + parseInt(digit), 0);
-                if (num === 11 || num === 22 || num === 33) return num;
-            }
-            return num;
-        }
-        
-        function calculateLifePathNumber(birthDate) {
-            const date = new Date(birthDate);
-            const month = date.getMonth() + 1;
-            const day = date.getDate();
-            const year = date.getFullYear();
-            
-            const sum = month + day + year.toString().split('').reduce((sum, digit) => sum + parseInt(digit), 0);
-            return reduceToSingleDigit(sum);
-        }
-        
-        function calculateExpressionNumber(name) {
-            const cleanName = name.replace(/[^A-Za-z]/g, '');
-            let sum = 0;
-            for (let letter of cleanName) {
-                sum += getLetterValue(letter);
-            }
-            return reduceToSingleDigit(sum);
-        }
-        
-        function calculateSoulUrgeNumber(name) {
-            const vowels = 'AEIOU';
-            const cleanName = name.replace(/[^A-Za-z]/g, '').toUpperCase();
-            let sum = 0;
-            
-            for (let letter of cleanName) {
-                if (vowels.includes(letter)) {
-                    sum += getLetterValue(letter);
-                }
-            }
-            return reduceToSingleDigit(sum);
-        }
-        
-        function calculatePersonalityNumber(name) {
-            const vowels = 'AEIOU';
-            const cleanName = name.replace(/[^A-Za-z]/g, '').toUpperCase();
-            let sum = 0;
-            
-            for (let letter of cleanName) {
-                if (!vowels.includes(letter)) {
-                    sum += getLetterValue(letter);
-                }
-            }
-            return reduceToSingleDigit(sum);
-        }
-        
-        function calculateBirthDayNumber(birthDate) {
-            const day = new Date(birthDate).getDate();
-            return reduceToSingleDigit(day);
-        }
-        
-        function calculateMaturityNumber(lifePath, expression) {
-            return reduceToSingleDigit(lifePath + expression);
-        }
-        
-        function calculatePersonalYear(birthDate) {
-            const date = new Date(birthDate);
-            const currentYear = new Date().getFullYear();
-            const month = date.getMonth() + 1;
-            const day = date.getDate();
-            
-            const sum = month + day + currentYear.toString().split('').reduce((sum, digit) => sum + parseInt(digit), 0);
-            return reduceToSingleDigit(sum);
-        }
-        
-        function calculatePersonalMonth(birthDate) {
-            const personalYear = calculatePersonalYear(birthDate);
-            const currentMonth = new Date().getMonth() + 1;
-            return reduceToSingleDigit(personalYear + currentMonth);
-        }
-        
-        function calculatePersonalDay(birthDate) {
-            const personalMonth = calculatePersonalMonth(birthDate);
-            const currentDay = new Date().getDate();
-            return reduceToSingleDigit(personalMonth + currentDay);
-        }
-        
-        function calculateChallengeNumber(birthDate, challengeNum) {
-            const date = new Date(birthDate);
-            const month = date.getMonth() + 1;
-            const day = date.getDate();
-            const year = date.getFullYear();
-            
-            const monthReduced = reduceToSingleDigit(month);
-            const dayReduced = reduceToSingleDigit(day);
-            const yearReduced = reduceToSingleDigit(year);
-            
-            switch (challengeNum) {
-                case 1: return Math.abs(monthReduced - dayReduced);
-                case 2: return Math.abs(dayReduced - yearReduced);
-                case 3: return Math.abs(monthReduced - yearReduced);
-                default: return 0;
-            }
-        }
-        
-        function calculateAttitudeNumber(birthDate) {
-            const date = new Date(birthDate);
-            const month = date.getMonth() + 1;
-            const day = date.getDate();
-            return reduceToSingleDigit(month + day);
-        }
-        
-        function calculatePowerNumber(name, birthDate) {
-            const expression = calculateExpressionNumber(name);
-            const birthDay = calculateBirthDayNumber(birthDate);
-            return reduceToSingleDigit(expression + birthDay);
-        }
-        
-        // Enhanced Name Analysis Functions
-        function calculateNameNumber(name) {
-            return calculateExpressionNumber(name);
-        }
-        
-        function getLuckyNumbersByLifePath(lifePath) {
-            return luckyNumbersByLifePath[lifePath] || [];
-        }
-        
-        function suggestNameModifications(name, lifePath) {
-            const nameNumber = calculateNameNumber(name);
-            const luckyNumbers = getLuckyNumbersByLifePath(lifePath);
-            const isWellAligned = luckyNumbers.includes(nameNumber);
-            
-            const result = {
-                nameNumber,
-                luckyNumbers,
-                isWellAligned,
-                alignment: isWellAligned ? 'excellent' : 'needs-improvement'
-            };
-            
-            if (isWellAligned) {
-                result.message = `Excellent! Your name number ${nameNumber} is perfectly aligned with your Life Path ${lifePath}.`;
-                result.advice = 'Your name vibrates in harmony with your soul purpose. Continue using this name with confidence.';
-            } else {
-                result.message = `Your name number ${nameNumber} could be optimized for your Life Path ${lifePath}.`;
-                result.advice = 'Consider modifying your name to align with lucky numbers: ' + luckyNumbers.slice(0, 3).join(', ');
-                result.correctionProcess = [
-                    '1. Accept the new name mentally and emotionally',
-                    '2. Write the new name 24 times daily for 90 days',
-                    '3. Update all social media profiles gradually',
-                    '4. Change email signatures and name plates',
-                    '5. Introduce yourself with the new name consistently'
-                ];
-            }
-            
-            return result;
-        }
-        
-        function displayNumerologyResults(results, name) {
-            const resultsDiv = document.getElementById('numerologyResults');
-            resultsDiv.classList.remove('hidden');
-            resultsDiv.innerHTML = '';
-            
-            // Add name suggestion analysis
-            const nameAnalysis = suggestNameModifications(name, results.lifePath);
-            const suggestionBox = document.createElement('div');
-            suggestionBox.className = `name-suggestion-box ${nameAnalysis.isWellAligned ? 'well-aligned' : 'needs-correction'}`;
-            
-            let suggestionHTML = `
-                <h3 style="color: var(--color-accent); margin-bottom: 1rem;">
-                    ${nameAnalysis.isWellAligned ? '✅' : '⚠️'} Name Analysis &amp; Lucky Numbers
-                </h3>
-                <div style="margin-bottom: 1rem;">
-                    <p><strong>Your Name Number:</strong> ${nameAnalysis.nameNumber}</p>
-                    <p><strong>Life Path Lucky Numbers:</strong> ${nameAnalysis.luckyNumbers.join(', ')}</p>
-                    <p><strong>Alignment:</strong> ${nameAnalysis.message}</p>
-                </div>
-                <div style="padding: 1rem; background: rgba(0,0,0,0.2); border-radius: 8px;">
-                    <p style="margin: 0;"><strong>Guidance:</strong> ${nameAnalysis.advice}</p>
-                </div>
-            `;
-            
-            if (!nameAnalysis.isWellAligned && nameAnalysis.correctionProcess) {
-                suggestionHTML += `
-                    <div style="margin-top: 1rem; padding: 1rem; background: rgba(168, 85, 247, 0.1); border-radius: 8px;">
-                        <h4 style="color: var(--color-accent); margin-bottom: 0.5rem;">📝 Name Correction Process:</h4>
-                        <ul style="margin: 0; padding-left: 1.5rem;">
-                            ${nameAnalysis.correctionProcess.map(step => `<li style="margin: 0.25rem 0;">${step}</li>`).join('')}
-                        </ul>
-                    </div>
-                `;
-            }
-            
-            suggestionBox.innerHTML = suggestionHTML;
-            resultsDiv.appendChild(suggestionBox);
-            
-            const numberTypes = {
-                lifePath: { name: 'Life Path Number', desc: 'Your life purpose and journey' },
-                expression: { name: 'Expression Number', desc: 'Your natural talents and abilities' },
-                soulUrge: { name: 'Soul Urge Number', desc: 'Your heart\'s deepest desires' },
-                personality: { name: 'Personality Number', desc: 'How others see you' },
-                birthDay: { name: 'Birth Day Number', desc: 'Special talents from birth date' },
-                maturity: { name: 'Maturity Number', desc: 'Your potential in later life' },
-                personalYear: { name: 'Personal Year', desc: 'This year\'s energy theme' },
-                personalMonth: { name: 'Personal Month', desc: 'This month\'s focus' },
-                personalDay: { name: 'Personal Day', desc: 'Today\'s energy' },
-                challenge1: { name: 'First Challenge', desc: 'Early life lesson' },
-                challenge2: { name: 'Second Challenge', desc: 'Mid-life lesson' },
-                challenge3: { name: 'Main Challenge', desc: 'Life-long lesson' },
-                attitude: { name: 'Attitude Number', desc: 'Your approach to life' },
-                power: { name: 'Power Number', desc: 'Your inner strength' }
-            };
-            
-            Object.entries(results).forEach(([type, value]) => {
-                const meaning = numerologyMeanings[value];
-                const typeInfo = numberTypes[type];
-                
-                if (meaning && typeInfo) {
-                    const card = document.createElement('div');
-                    card.className = 'number-card';
-                    
-                    card.innerHTML = `
-                        <div class="number-value">${value}</div>
-                        <div class="number-type">${typeInfo.name}</div>
-                        <div style="font-size: 0.85rem; opacity: 0.8; margin-bottom: 1rem;">${typeInfo.desc}</div>
-                        <div class="number-description">
-                            <p style="font-weight: 600; color: var(--color-accent); margin-bottom: 0.5rem;">${meaning.trait}</p>
-                            <p style="margin-bottom: 1rem; line-height: 1.4;">${meaning.description}</p>
-                            <div style="font-size: 0.85rem; opacity: 0.8; text-align: left;">
-                                <p><strong>Lucky Colors:</strong> ${meaning.lucky_color}</p>
-                                <p><strong>Lucky Day:</strong> ${meaning.lucky_day}</p>
-                                <p><strong>Lucky Numbers:</strong> ${meaning.lucky_numbers}</p>
-                                <p><strong>Compatible Numbers:</strong> ${meaning.compatible}</p>
-                                <p><strong>Career Path:</strong> ${meaning.career}</p>
-                                <p><strong>Relationships:</strong> ${meaning.relationships}</p>
-                            </div>
-                        </div>
-                    `;
-                    
-                    resultsDiv.appendChild(card);
-                }
-            });
-            
-            // Add compatibility analysis
-            const compatibilityCard = document.createElement('div');
-            compatibilityCard.className = 'card';
-            compatibilityCard.innerHTML = `
-                <h3 style="color: var(--color-accent); text-align: center; margin-bottom: 1rem;">🔗 Compatibility Analysis</h3>
-                <div style="background: rgba(255, 215, 0, 0.1); padding: 1rem; border-radius: 8px;">
-                    <p><strong>Harmony Score:</strong> ${calculateHarmonyScore(results)}/10</p>
-                    <p style="margin-top: 0.5rem;">${generateCompatibilityInsight(results)}</p>
-                </div>
-            `;
-            resultsDiv.appendChild(compatibilityCard);
-            
-            resultsDiv.scrollIntoView({ behavior: 'smooth' });
-        }
-        
-        function calculateHarmonyScore(results) {
-            // Simple harmony calculation based on number relationships
-            const coreNumbers = [results.lifePath, results.expression, results.soulUrge, results.personality];
-            let harmony = 5; // Base score
-            
-            // Check for master numbers (add harmony)
-            coreNumbers.forEach(num => {
-                if ([11, 22, 33].includes(num)) harmony += 1;
-            });
-            
-            // Check for number patterns
-            const uniqueNumbers = new Set(coreNumbers);
-            if (uniqueNumbers.size === 1) harmony += 2; // All same numbers
-            else if (uniqueNumbers.size === 2) harmony += 1; // Two pairs
-            
-            return Math.min(10, Math.max(1, harmony));
-        }
-        
-        function generateCompatibilityInsight(results) {
-            const harmony = calculateHarmonyScore(results);
-            
-            if (harmony >= 8) {
-                return "Excellent harmony! Your numbers work together beautifully, creating a strong foundation for success and happiness.";
-            } else if (harmony >= 6) {
-                return "Good balance in your numerological profile. Some areas of natural flow with opportunities for growth.";
-            } else if (harmony >= 4) {
-                return "Moderate harmony with some internal tension. This creates dynamic energy that can be channeled productively.";
-            } else {
-                return "Complex energy patterns suggest a journey of integration. Your challenges will become your greatest strengths.";
-            }
-        }
-        
-        // Enhanced Moonology System with Manual Draw
-        async function drawMoonCards() {
-            const spreadType = document.getElementById('moonSpreadType').value;
-            const config = moonSpreads[spreadType];
-            
-            if (!config) return;
-            
-            const btn = document.getElementById('drawMoonCards');
-            const originalText = btn.innerHTML;
-            btn.innerHTML = '🌙 Channeling... <span class="loading"></span>';
-            btn.disabled = true;
-            
-            // Show shuffle animation for auto draw only
-            if (drawMode['moonology'] === 'auto') {
-                await showShuffleAnimation('moonology');
-                
-                drawnMoonCards = [];
-                const shuffledMoonCards = [...moonologyCards].sort(() => Math.random() - 0.5);
-                
-                for (let i = 0; i < config.cards; i++) {
-                    drawnMoonCards.push({
-                        ...shuffledMoonCards[i],
-                        position: config.positions[i]
-                    });
-                }
-                
-                displayMoonReading(drawnMoonCards, spreadType);
-            } else {
-                startMoonologyManualDraw();
-            }
-            
-            btn.innerHTML = originalText;
-            btn.disabled = false;
-        }
-        
-        function startMoonologyManualDraw() {
-            const spreadType = document.getElementById('moonSpreadType').value;
-            const config = moonSpreads[spreadType];
-            requiredCardCount = config.cards;
-            currentOracle = 'moonology';
-            
-            // Reset selection
-            manualSelectedCards = [];
-            updateMoonologySelectionCounter();
-            
-            // Show deck container
-            const deckContainer = document.getElementById('moonDeckContainer');
-            const cardDeck = document.getElementById('moonCardDeck');
-            deckContainer.classList.add('active');
-            
-            // Create 16 face-down lunar cards
-            cardDeck.innerHTML = '';
-            for (let i = 0; i < 16; i++) {
-                const card = document.createElement('div');
-                card.className = 'deck-card moonology-deck-card';
-                card.dataset.cardIndex = i;
-                card.addEventListener('click', () => selectMoonologyCard(i));
-                cardDeck.appendChild(card);
-            }
-            
-            // Hide results and show deck
-            document.getElementById('moonResults').classList.add('hidden');
-            deckContainer.scrollIntoView({ behavior: 'smooth' });
-        }
-        
-        function selectMoonologyCard(index) {
-            const cardElement = document.querySelector(`#moonCardDeck [data-card-index="${index}"]`);
-            
-            if (manualSelectedCards.includes(index)) {
-                // Deselect card
-                manualSelectedCards = manualSelectedCards.filter(i => i !== index);
-                cardElement.classList.remove('selected');
-            } else {
-                // Select card (if not at limit)
-                if (manualSelectedCards.length < requiredCardCount) {
-                    manualSelectedCards.push(index);
-                    cardElement.classList.add('selected');
-                }
-            }
-            
-            updateMoonologySelectionCounter();
-            updateMoonologyRevealButton();
-        }
-        
-        function updateMoonologySelectionCounter() {
-            const counter = document.getElementById('moonSelectionCounter');
-            counter.textContent = `Cards selected: ${manualSelectedCards.length} / ${requiredCardCount}`;
-        }
-        
-        function updateMoonologyRevealButton() {
-            const revealBtn = document.getElementById('moonRevealBtn');
-            if (manualSelectedCards.length === requiredCardCount) {
-                revealBtn.classList.add('active');
-            } else {
-                revealBtn.classList.remove('active');
-            }
-        }
-        
-        function confirmMoonologySelection() {
-            if (manualSelectedCards.length !== requiredCardCount) return;
-            
-            const spreadType = document.getElementById('moonSpreadType').value;
-            const config = moonSpreads[spreadType];
-            
-            // Create selected cards array
-            drawnMoonCards = [];
-            const shuffledMoonCards = [...moonologyCards].sort(() => Math.random() - 0.5);
-            
-            manualSelectedCards.forEach((cardIndex, i) => {
-                const card = shuffledMoonCards[cardIndex % shuffledMoonCards.length];
-                drawnMoonCards.push({
-                    ...card,
-                    position: config.positions[i]
-                });
-            });
-            
-            // Hide deck and show reading
-            document.getElementById('moonDeckContainer').classList.remove('active');
-            displayMoonReading(drawnMoonCards, spreadType);
-        }
-        
-        function displayMoonReading(cards, spreadType) {
-            const resultsDiv = document.getElementById('moonResults');
-            const cardsDiv = document.getElementById('moonCards');
-            const interpretationDiv = document.getElementById('moonInterpretation');
-            
-            resultsDiv.classList.remove('hidden');
-            
-            cardsDiv.innerHTML = '';
-            cards.forEach(card => {
-                const cardElement = document.createElement('div');
-                cardElement.className = 'reading-card';
-                
-                const detailedGuidance = getMoonCardGuidance(card);
-                
-                cardElement.innerHTML = `
-                    <div class="card">
-                        <div class="reading-position">${card.position}</div>
-                        <div style="font-size: 3rem; margin: 1rem 0;">${card.symbol}</div>
-                        <h3 style="color: var(--color-accent); margin: 1rem 0;">${card.name}</h3>
-                        <div class="interpretation">
-                            <p><strong>Lunar Message:</strong> ${card.message}</p>
-                            <p style="margin-top: 0.5rem;"><strong>Guidance:</strong> ${card.guidance}</p>
-                        </div>
-                        <div class="detailed-guidance">
-                            <h4 style="color: var(--color-accent); margin-bottom: 1rem;">🌙 Deep Lunar Wisdom</h4>
-                            <div class="guidance-section">
-                                <p><strong>💫 What This Lunar Energy Teaches:</strong></p>
-                                <p style="margin-top: 0.5rem;">${detailedGuidance.teaching}</p>
-                            </div>
-                            <div class="guidance-section">
-                                <p><strong>🎯 Lunar Action Steps:</strong></p>
-                                <p style="margin-top: 0.5rem;">${detailedGuidance.action}</p>
-                            </div>
-                            <div class="guidance-section">
-                                <p><strong>⚠️ Lunar Cautions:</strong></p>
-                                <p style="margin-top: 0.5rem;">${detailedGuidance.warning}</p>
-                            </div>
-                            <div class="guidance-section">
-                                <p><strong>✨ Luna's Affirmation:</strong></p>
-                                <p style="margin-top: 0.5rem; font-style: italic; color: var(--color-accent);">${detailedGuidance.affirmation}</p>
-                            </div>
-                        </div>
-                    </div>
-                `;
-                
-                cardsDiv.appendChild(cardElement);
-            });
-            
-            // Add lunar wisdom
-            interpretationDiv.innerHTML = `
-                <div class="card">
-                    <h3 style="color: var(--color-accent); margin-bottom: 1rem;">🌙 Luna's Sacred Wisdom</h3>
-                    <div style="background: rgba(255, 215, 0, 0.1); padding: 1.5rem; border-radius: 10px; border: 1px solid rgba(255, 215, 0, 0.3);">
-                        ${generateLunarWisdom(cards, spreadType)}
-                    </div>
-                </div>
-            `;
-            
-            resultsDiv.scrollIntoView({ behavior: 'smooth' });
-        }
-        
-        function generateLunarWisdom(cards, spreadType) {
-            const currentMoonPhase = getCurrentMoonPhase();
-            
-            let wisdom = `<p><strong>Current Moon Phase:</strong> ${currentMoonPhase.name} - ${currentMoonPhase.energy}</p>`;
-            
-            const spreadWisdom = {
-                daily: "Today's lunar energy supports gentle reflection and intuitive insights. Trust your inner knowing.",
-                phase: "The current moon phase is calling you to work with natural cycles of growth and release. Honor both your need to manifest and your need to let go.",
-                cycle: "You are being guided through a complete lunar cycle of transformation. Each phase brings its own gifts and lessons for your spiritual evolution.",
-                manifestation: "Luna amplifies your manifestation power during this reading. Set clear intentions and trust in divine timing for their fulfillment."
-            };
-            
-            wisdom += `<p style="margin-top: 1rem;">${spreadWisdom[spreadType] || 'The moon guides you toward your highest good.'}</p>`;
-            
-            wisdom += '<p style="margin-top: 1rem;"><strong>Lunar Practice:</strong> Spend time under the moonlight tonight, even if it\'s cloudy. Luna\'s energy will bless your intentions and illuminate your path forward.</p>';
-            
-            return wisdom;
-        }
-        
-        function getCurrentMoonPhase() {
-            // Simplified moon phase calculation
-            const phases = [
-                { name: "New Moon", energy: "Perfect time for new beginnings and setting intentions" },
-                { name: "Waxing Crescent", energy: "Building energy supports taking first steps toward goals" },
-                { name: "First Quarter", energy: "Action and determination help overcome challenges" },
-                { name: "Waxing Gibbous", energy: "Refinement and adjustment lead to better outcomes" },
-                { name: "Full Moon", energy: "Peak manifestation power and emotional culmination" },
-                { name: "Waning Gibbous", energy: "Gratitude and sharing wisdom with others" },
-                { name: "Last Quarter", energy: "Release what no longer serves your highest good" },
-                { name: "Waning Crescent", energy: "Rest and reflection prepare you for new cycles" }
-            ];
-            
-            // Return a random phase for demonstration
-            return phases[Math.floor(Math.random() * phases.length)];
-        }
-        
-        function getMoonCardGuidance(card) {
-            const moonGuidance = {
-                'New Moon in Aries': {
-                    teaching: 'This powerful new moon teaches you to initiate bold action and trust your pioneering spirit. Aries energy brings the courage to start fresh cycles.',
-                    action: 'Set three specific intentions for new beginnings. Take one concrete step today toward a goal you\'ve been postponing. Channel your inner fire into productive action.',
-                    warning: 'Avoid impulsive decisions that you haven\'t thought through. Don\'t let impatience cause you to skip important foundational steps.',
-                    affirmation: 'I embrace new beginnings with courage and trust in my ability to create positive change.'
-                },
-                'Waxing Crescent': {
-                    teaching: 'This growing moon teaches patience with the manifestation process and faith in small, consistent actions building toward success.',
-                    action: 'Take one small step daily toward your goals. Focus on building momentum rather than expecting immediate results. Nurture your intentions with consistent care.',
-                    warning: 'Don\'t give up too early or expect instant gratification. Avoid getting discouraged by slow progress - growth takes time.',
-                    affirmation: 'I trust the process and celebrate each small step toward my dreams.'
-                },
-                'First Quarter Moon': {
-                    teaching: 'This challenging moon phase teaches that obstacles are opportunities to strengthen your commitment and refine your approach.',
-                    action: 'Face your current challenges head-on with determination. Make necessary adjustments to your plans. Push through resistance with focused effort.',
-                    warning: 'Don\'t let obstacles discourage you completely. Avoid being too rigid - flexibility helps you navigate challenges more effectively.',
-                    affirmation: 'I overcome challenges with grace and use obstacles as stepping stones to success.'
-                },
-                'Waxing Gibbous': {
-                    teaching: 'This refining moon teaches the importance of patience, adjustment, and trusting the process of gradual improvement.',
-                    action: 'Review your progress and make necessary fine-tuning adjustments. Practice patience with the unfolding process. Polish and refine your approach.',
-                    warning: 'Don\'t become overly critical or perfectionist. Avoid rushing the natural timing of manifestation.',
-                    affirmation: 'I trust divine timing and make gentle adjustments that align me with my highest good.'
-                },
-                'Full Moon': {
-                    teaching: 'This peak moon teaches about celebration, completion, and releasing what you\'ve outgrown to make space for new blessings.',
-                    action: 'Celebrate your achievements and express gratitude for how far you\'ve come. Release anything that no longer serves your growth.',
-                    warning: 'Don\'t hold onto things past their expiration date. Avoid emotional overwhelm by grounding yourself in nature.',
-                    affirmation: 'I celebrate my achievements and gracefully release what no longer serves my highest good.'
-                },
-                'Waning Gibbous': {
-                    teaching: 'This sharing moon teaches about gratitude, generosity, and the joy that comes from helping others with your wisdom.',
-                    action: 'Share your knowledge and blessings with others. Express gratitude for all you\'ve received. Mentor someone who could benefit from your experience.',
-                    warning: 'Don\'t become preachy or assume others want unsolicited advice. Balance giving with receiving.',
-                    affirmation: 'I share my gifts generously and express heartfelt gratitude for all my blessings.'
-                },
-                'Last Quarter Moon': {
-                    teaching: 'This releasing moon teaches the sacred art of letting go and trusting that endings create space for new beginnings.',
-                    action: 'Consciously release old grudges, limiting beliefs, or situations that drain your energy. Practice forgiveness, especially self-forgiveness.',
-                    warning: 'Don\'t cling to the past out of fear of the unknown. Avoid being too harsh with yourself during release processes.',
-                    affirmation: 'I release with love all that no longer serves me and trust in the new that is coming.'
-                },
-                'Waning Crescent': {
-                    teaching: 'This restful moon teaches about the wisdom of cycles, the need for reflection, and preparing for new growth.',
-                    action: 'Take time for quiet reflection and rest. Journal about lessons learned this cycle. Prepare mentally and spiritually for new beginnings.',
-                    warning: 'Don\'t isolate yourself completely or become too introspective. Balance solitude with gentle connection to others.',
-                    affirmation: 'I honor the need for rest and reflection as I prepare for new cycles of growth.'
-                }
-            };
-            
-            // Default guidance for cards not specifically mapped
-            const defaultGuidance = {
-                teaching: 'This lunar energy teaches you to align with natural cycles and trust in divine timing.',
-                action: 'Work with lunar energy through meditation, intention-setting, and honoring your intuitive guidance.',
-                warning: 'Be mindful not to force outcomes or resist the natural flow of lunar cycles.',
-                affirmation: 'I align with lunar wisdom and trust in the perfect timing of my manifestations.'
-            };
-            
-            return moonGuidance[card.name] || defaultGuidance;
-        }
-        
-        function resetMoonReading() {
-            drawnMoonCards = [];
-            manualSelectedCards = [];
-            document.getElementById('moonResults').classList.add('hidden');
-            document.getElementById('moonDeckContainer').classList.remove('active');
-        }
-        
-        // Enhanced Kali Oracle System with Manual Draw
-        async function drawKaliCards() {
-            const spreadType = document.getElementById('kaliSpreadType').value;
-            const config = kaliSpreads[spreadType];
-            
-            if (!config) return;
-            
-            const btn = document.getElementById('drawKaliCards');
-            const originalText = btn.innerHTML;
-            btn.innerHTML = '🔥 Channeling... <span class="loading"></span>';
-            btn.disabled = true;
-            
-            // Show shuffle animation for auto draw only
-            if (drawMode['kali'] === 'auto') {
-                await showShuffleAnimation('kali');
-                
-                drawnKaliCards = [];
-                const shuffledKaliCards = [...kaliCards].sort(() => Math.random() - 0.5);
-                
-                for (let i = 0; i < config.cards; i++) {
-                    drawnKaliCards.push({
-                        ...shuffledKaliCards[i],
-                        position: config.positions[i]
-                    });
-                }
-                
-                displayKaliReading(drawnKaliCards, spreadType);
-            } else {
-                startKaliManualDraw();
-            }
-            
-            btn.innerHTML = originalText;
-            btn.disabled = false;
-        }
-        
-        function startKaliManualDraw() {
-            const spreadType = document.getElementById('kaliSpreadType').value;
-            const config = kaliSpreads[spreadType];
-            requiredCardCount = config.cards;
-            currentOracle = 'kali';
-            
-            // Reset selection
-            manualSelectedCards = [];
-            updateKaliSelectionCounter();
-            
-            // Show deck container
-            const deckContainer = document.getElementById('kaliDeckContainer');
-            const cardDeck = document.getElementById('kaliCardDeck');
-            deckContainer.classList.add('active');
-            
-            // Create 16 face-down Kali cards
-            cardDeck.innerHTML = '';
-            for (let i = 0; i < 16; i++) {
-                const card = document.createElement('div');
-                card.className = 'deck-card kali-deck-card';
-                card.dataset.cardIndex = i;
-                card.addEventListener('click', () => selectKaliCard(i));
-                cardDeck.appendChild(card);
-            }
-            
-            // Hide results and show deck
-            document.getElementById('kaliResults').classList.add('hidden');
-            deckContainer.scrollIntoView({ behavior: 'smooth' });
-        }
-        
-        function selectKaliCard(index) {
-            const cardElement = document.querySelector(`#kaliCardDeck [data-card-index="${index}"]`);
-            
-            if (manualSelectedCards.includes(index)) {
-                // Deselect card
-                manualSelectedCards = manualSelectedCards.filter(i => i !== index);
-                cardElement.classList.remove('selected');
-            } else {
-                // Select card (if not at limit)
-                if (manualSelectedCards.length < requiredCardCount) {
-                    manualSelectedCards.push(index);
-                    cardElement.classList.add('selected');
-                }
-            }
-            
-            updateKaliSelectionCounter();
-            updateKaliRevealButton();
-        }
-        
-        function updateKaliSelectionCounter() {
-            const counter = document.getElementById('kaliSelectionCounter');
-            counter.textContent = `Cards selected: ${manualSelectedCards.length} / ${requiredCardCount}`;
-        }
-        
-        function updateKaliRevealButton() {
-            const revealBtn = document.getElementById('kaliRevealBtn');
-            if (manualSelectedCards.length === requiredCardCount) {
-                revealBtn.classList.add('active');
-            } else {
-                revealBtn.classList.remove('active');
-            }
-        }
-        
-        function confirmKaliSelection() {
-            if (manualSelectedCards.length !== requiredCardCount) return;
-            
-            const spreadType = document.getElementById('kaliSpreadType').value;
-            const config = kaliSpreads[spreadType];
-            
-            // Create selected cards array
-            drawnKaliCards = [];
-            const shuffledKaliCards = [...kaliCards].sort(() => Math.random() - 0.5);
-            
-            manualSelectedCards.forEach((cardIndex, i) => {
-                const card = shuffledKaliCards[cardIndex % shuffledKaliCards.length];
-                drawnKaliCards.push({
-                    ...card,
-                    position: config.positions[i]
-                });
-            });
-            
-            // Hide deck and show reading
-            document.getElementById('kaliDeckContainer').classList.remove('active');
-            displayKaliReading(drawnKaliCards, spreadType);
-        }
-        
-        function displayKaliReading(cards, spreadType) {
-            const resultsDiv = document.getElementById('kaliResults');
-            const cardsDiv = document.getElementById('kaliCards');
-            const interpretationDiv = document.getElementById('kaliInterpretation');
-            
-            resultsDiv.classList.remove('hidden');
-            
-            cardsDiv.innerHTML = '';
-            cards.forEach(card => {
-                const cardElement = document.createElement('div');
-                cardElement.className = 'reading-card';
-                
-                const detailedGuidance = getKaliCardGuidance(card);
-                
-                cardElement.innerHTML = `
-                    <div class="card">
-                        <div class="reading-position">${card.position}</div>
-                        <div style="font-size: 3rem; margin: 1rem 0;">${card.symbol}</div>
-                        <h3 style="color: var(--color-accent); margin: 1rem 0;">${card.name}</h3>
-                        <div class="interpretation">
-                            <p><strong>Kali's Message:</strong> ${card.message}</p>
-                            <p style="margin-top: 0.5rem;"><strong>Divine Guidance:</strong> ${card.guidance}</p>
-                        </div>
-                        <div class="detailed-guidance">
-                            <h4 style="color: var(--color-accent); margin-bottom: 1rem;">🔥 Kali Ma's Sacred Teaching</h4>
-                            <div class="guidance-section">
-                                <p><strong>💫 What Kali Ma Teaches:</strong></p>
-                                <p style="margin-top: 0.5rem;">${detailedGuidance.teaching}</p>
-                            </div>
-                            <div class="guidance-section">
-                                <p><strong>🎯 Fierce Action Steps:</strong></p>
-                                <p style="margin-top: 0.5rem;">${detailedGuidance.action}</p>
-                            </div>
-                            <div class="guidance-section">
-                                <p><strong>⚠️ Shadow to Transform:</strong></p>
-                                <p style="margin-top: 0.5rem;">${detailedGuidance.warning}</p>
-                            </div>
-                            <div class="guidance-section">
-                                <p><strong>✨ Kali's Empowerment:</strong></p>
-                                <p style="margin-top: 0.5rem; font-style: italic; color: var(--color-accent);">${detailedGuidance.affirmation}</p>
-                            </div>
-                        </div>
-                    </div>
-                `;
-                
-                cardsDiv.appendChild(cardElement);
-            });
-            
-            // Add Kali's wisdom
-            interpretationDiv.innerHTML = `
-                <div class="card">
-                    <h3 style="color: var(--color-accent); margin-bottom: 1rem;">🔥 Kali Ma's Sacred Transmission</h3>
-                    <div style="background: rgba(255, 215, 0, 0.1); padding: 1.5rem; border-radius: 10px; border: 1px solid rgba(255, 215, 0, 0.3);">
-                        ${generateKaliWisdom(cards, spreadType)}
-                    </div>
-                </div>
-            `;
-            
-            resultsDiv.scrollIntoView({ behavior: 'smooth' });
-        }
-        
-        function generateKaliWisdom(cards, spreadType) {
-            const spreadWisdom = {
-                daily: "Kali Ma blesses you with her fierce protection today. You have the strength to face any challenge and transform it into victory.",
-                shadow: "The Divine Mother calls you to embrace your shadow with love and courage. What you resist persists; what you embrace transforms into power.",
-                transformation: "You are in Kali's sacred fire of transformation. Trust the destruction process - it clears space for your magnificent rebirth.",
-                warrior: "Kali awakens the spiritual warrior within you. You have everything you need to overcome obstacles and claim your divine sovereignty."
-            };
-            
-            let wisdom = `<p>${spreadWisdom[spreadType] || 'Kali Ma guides you toward fierce love and authentic power.'}</p>`;
-            
-            wisdom += '<p style="margin-top: 1rem;"><strong>Kali\'s Promise:</strong> "I am the force that destroys what constrains you and births what liberates you. Trust my fierce love - it always serves your highest evolution."</p>';
-            
-            wisdom += '<p style="margin-top: 1rem;"><strong>Sacred Practice:</strong> Light a red candle tonight and speak your truth aloud. Kali Ma hears every word and strengthens your voice.</p>';
-            
-            return wisdom;
-        }
-        
-        function getKaliCardGuidance(card) {
-            const kaliGuidance = {
-                'Fierce Protection': {
-                    teaching: 'Kali Ma teaches you that true protection comes from standing in your authentic power and setting sacred boundaries. You are divinely protected when you honor your truth.',
-                    action: 'Establish clear boundaries in relationships and situations that drain your energy. Speak up against injustice. Trust your protective instincts and act on them.',
-                    warning: 'Beware of people or situations that consistently disrespect your boundaries. Don\'t ignore red flags or warning signs out of misplaced compassion.',
-                    affirmation: 'I am divinely protected and stand fearlessly in my authentic power and truth.'
-                },
-                'Shadow Integration': {
-                    teaching: 'The Divine Mother teaches that your shadow contains hidden gold - rejected parts of yourself that hold tremendous power when integrated with love.',
-                    action: 'Examine what you judge harshly in others, as this often reflects rejected aspects of yourself. Practice self-compassion. Seek therapy or shadow work if needed.',
-                    warning: 'Don\'t project your shadow onto others or deny your own capacity for all human emotions. Avoid spiritual bypassing of difficult feelings.',
-                    affirmation: 'I embrace all aspects of myself with love and integrate my shadow into wholeness.'
-                },
-                'Destruction of Illusions': {
-                    teaching: 'Kali Ma shows you that what feels like destruction is actually liberation from false beliefs and limitations that have kept you small.',
-                    action: 'Question beliefs about yourself and life that limit your growth. Let go of stories that no longer serve. Embrace truth even when it\'s uncomfortable.',
-                    warning: 'Don\'t resist necessary changes out of fear of the unknown. Avoid clinging to familiar but limiting situations.',
-                    affirmation: 'I release all illusions and embrace the liberating truth of who I really am.'
-                },
-                'Divine Rage': {
-                    teaching: 'Sacred anger is a powerful force for justice and positive change. Kali teaches you to channel this energy constructively rather than destructively.',
-                    action: 'Use your anger as fuel for positive action and social justice. Set boundaries with those who mistreat you. Transform rage into fierce compassion.',
-                    warning: 'Don\'t suppress healthy anger or let it explode destructively. Avoid passive-aggressive behavior or turning anger inward.',
-                    affirmation: 'I transform my sacred anger into fierce love and positive action for justice.'
-                },
-                'Mother\'s Fierce Love': {
-                    teaching: 'True love is sometimes fierce and includes saying no to what harms those we care about. Kali teaches protective love with strong boundaries.',
-                    action: 'Love others enough to set boundaries that protect both of you. Practice tough love when necessary. Protect the innocent and vulnerable.',
-                    warning: 'Don\'t enable destructive behavior in the name of love. Avoid codependency or martyrdom disguised as caring.',
-                    affirmation: 'I love fiercely with wisdom and protect what is sacred through strong boundaries.'
-                },
-                'Time of Endings': {
-                    teaching: 'Kali Ma, as the goddess of time and death, teaches that endings are sacred gateways to transformation and rebirth.',
-                    action: 'Honor what is ending in your life with gratitude. Complete unfinished business. Prepare consciously for new beginnings.',
-                    warning: 'Don\'t prolong situations past their natural ending out of fear or attachment. Avoid denying the reality of necessary conclusions.',
-                    affirmation: 'I honor sacred endings and trust in the wisdom of divine timing for all transformations.'
-                },
-                'Truth Speaker': {
-                    teaching: 'Your voice carries divine authority when you speak from authentic truth. Kali empowers you to speak fearlessly for justice and healing.',
-                    action: 'Speak your truth even when your voice shakes. Use your voice to advocate for those who cannot speak for themselves. Share your authentic story.',
-                    warning: 'Don\'t silence yourself to keep others comfortable with lies. Avoid speaking from ego or a desire to harm others.',
-                    affirmation: 'My voice carries divine truth and I speak fearlessly for justice and healing.'
-                },
-                'Warrior Queen': {
-                    teaching: 'You are called to lead with fierce wisdom and compassionate authority. True sovereignty comes from serving the highest good.',
-                    action: 'Step into leadership roles that align with your values. Make decisions that serve the greater good. Lead by example with integrity.',
-                    warning: 'Don\'t abdicate your power or leadership responsibilities. Avoid ruling through fear or domination rather than wisdom.',
-                    affirmation: 'I claim my sovereign power and lead with fierce wisdom and compassionate strength.'
-                }
-            };
-            
-            // Default guidance for cards not specifically mapped
-            const defaultGuidance = {
-                teaching: 'Kali Ma teaches you to embrace your fierce divine feminine power and transform through sacred destruction.',
-                action: 'Channel Kali\'s energy through fearless authenticity and protective love. Stand up for justice and truth.',
-                warning: 'Be mindful not to use power destructively or suppress your authentic fierce nature.',
-                affirmation: 'I embody Kali\'s fierce love and transform through her sacred fire.'
-            };
-            
-            return kaliGuidance[card.name] || defaultGuidance;
-        }
-        
-        function resetKaliReading() {
-            drawnKaliCards = [];
-            manualSelectedCards = [];
-            document.getElementById('kaliResults').classList.add('hidden');
-            document.getElementById('kaliDeckContainer').classList.remove('active');
-        }
-        
-        // Event Listeners
-        function initializeEventListeners() {
-            // Tarot
-            document.getElementById('startReading').addEventListener('click', startTarotReading);
-            document.getElementById('resetReading').addEventListener('click', resetTarotReading);
-            
-            // Draw mode toggles for all oracles
-            document.querySelectorAll('.draw-mode-toggle').forEach(toggle => {
-                toggle.addEventListener('click', () => {
-                    const mode = toggle.dataset.mode;
-                    const oracle = toggle.dataset.oracle || 'tarot';
-                    drawMode[oracle] = mode;
-                    
-                    // Update active state for this oracle's toggles
-                    const oracleToggles = document.querySelectorAll(`[data-oracle="${oracle}"]`);
-                    oracleToggles.forEach(t => t.classList.remove('active'));
-                    toggle.classList.add('active');
-                    
-                    // Reset any ongoing manual selection
-                    if (oracle === 'tarot') {
-                        document.getElementById('cardDeckContainer').classList.remove('active');
-                    } else if (oracle === 'moonology') {
-                        document.getElementById('moonDeckContainer').classList.remove('active');
-                    } else if (oracle === 'kali') {
-                        document.getElementById('kaliDeckContainer').classList.remove('active');
-                    }
-                });
-            });
-            
-            // Reveal button for manual draw
-            document.getElementById('revealBtn').addEventListener('click', confirmCardSelection);
-            
-            // Update required card count when spread types change
-            document.getElementById('spreadType').addEventListener('change', () => {
-                const spreadType = document.getElementById('spreadType').value;
-                const config = spreadConfigs[spreadType];
-                requiredCardCount = config.cards;
-                if (document.getElementById('cardDeckContainer').classList.contains('active')) {
-                    updateSelectionCounter();
-                    updateRevealButton();
-                }
-            });
-            
-            // Update moonology card count when spread type changes
-            document.getElementById('moonSpreadType').addEventListener('change', () => {
-                const spreadType = document.getElementById('moonSpreadType').value;
-                const config = moonSpreads[spreadType];
-                requiredCardCount = config.cards;
-                if (document.getElementById('moonDeckContainer').classList.contains('active')) {
-                    updateMoonologySelectionCounter();
-                    updateMoonologyRevealButton();
-                }
-            });
-            
-            // Update kali card count when spread type changes
-            document.getElementById('kaliSpreadType').addEventListener('change', () => {
-                const spreadType = document.getElementById('kaliSpreadType').value;
-                const config = kaliSpreads[spreadType];
-                requiredCardCount = config.cards;
-                if (document.getElementById('kaliDeckContainer').classList.contains('active')) {
-                    updateKaliSelectionCounter();
-                    updateKaliRevealButton();
-                }
-            });
-            
-            // Numerology
-            document.getElementById('calculateNumerology').addEventListener('click', () => {
-                const name = document.getElementById('fullName').value.trim();
-                const birthDate = document.getElementById('numerologyBirthDate').value;
-                
-                if (!name || !birthDate) {
-                    const resultsDiv = document.getElementById('numerologyResults');
-                    resultsDiv.innerHTML = '<div class="error-message">Please enter both your full name and birth date for accurate calculations.</div>';
-                    resultsDiv.classList.remove('hidden');
-                    return;
-                }
-                
-                try {
-                    const results = calculateAllNumerology(name, birthDate);
-                    displayNumerologyResults(results, name);
-                } catch (error) {
-                    console.error('Numerology calculation error:', error);
-                    const resultsDiv = document.getElementById('numerologyResults');
-                    resultsDiv.innerHTML = '<div class="error-message">An error occurred during calculation. Please check your input and try again.</div>';
-                    resultsDiv.classList.remove('hidden');
-                }
-            });
-            
-            // Moonology
-            document.getElementById('drawMoonCards').addEventListener('click', drawMoonCards);
-            document.getElementById('resetMoonReading').addEventListener('click', resetMoonReading);
-            document.getElementById('moonRevealBtn').addEventListener('click', confirmMoonologySelection);
-            
-            // Kali Oracle
-            document.getElementById('drawKaliCards').addEventListener('click', drawKaliCards);
-            document.getElementById('resetKaliReading').addEventListener('click', resetKaliReading);
-            document.getElementById('kaliRevealBtn').addEventListener('click', confirmKaliSelection);
-        }
-        
-        // Initialize Application
-        document.addEventListener('DOMContentLoaded', () => {
-            updateCurrentDate();
-            shuffleDeck();
-            initializeNavigation();
-            initializeEventListeners();
-            
-            console.log('✨ Mystic Divination Perfect - Enhanced with all requested features! ✨');
-            console.log('Features: Compact Header | Shuffle Animations | Manual Draw for All Oracles | Complete Numerology');
         });
+
+        function handleLogin() {
+            const username = document.getElementById('username').value.trim();
+            const password = document.getElementById('password').value.trim();
+            const errorMsg = document.getElementById('errorMsg');
+            const successMsg = document.getElementById('successMsg');
+
+            // Reset messages
+            errorMsg.style.display = 'none';
+            successMsg.style.display = 'none';
+
+            // Find user
+            const user = users.find(u => u.username === username && u.password === password);
+
+            if (user) {
+                // Success
+                currentUser = user;
+                localStorage.setItem('currentUser', JSON.stringify(user));
+
+                successMsg.textContent = 'Login successful! Loading app...';
+                successMsg.style.display = 'block';
+
+                setTimeout(() => {
+                    showApp();
+                }, 500);
+            } else {
+                // Failed
+                errorMsg.textContent = 'Invalid username or password. Please try again.';
+                errorMsg.style.display = 'block';
+            }
+        }
+
+        function showApp() {
+            document.getElementById('loginPage').style.display = 'none';
+            document.getElementById('appContainer').style.display = 'block';
+
+            // Update user display
+            const userDisplay = document.getElementById('userDisplay');
+            let statusIcon = '👤';
+            if (currentUser.role === 'admin') statusIcon = '🔑';
+            else if (currentUser.plan === 'unlimited') statusIcon = '🔥';
+            else if (currentUser.plan === '5draw') statusIcon = '🎫';
+
+            userDisplay.textContent = `${statusIcon} ${currentUser.username}`;
+        }
+
+        function logout() {
+            localStorage.removeItem('currentUser');
+            currentUser = null;
+            document.getElementById('appContainer').style.display = 'none';
+            document.getElementById('loginPage').style.display = 'flex';
+            document.getElementById('username').value = '';
+            document.getElementById('password').value = '';
+        }
+
+        function showSection(sectionName) {
+            // Hide all sections
+            const sections = document.querySelectorAll('.section');
+            sections.forEach(s => s.classList.remove('active'));
+
+            // Remove active from all tabs
+            const tabs = document.querySelectorAll('.nav-tab');
+            tabs.forEach(t => t.classList.remove('active'));
+
+            // Show selected section
+            document.getElementById(sectionName).classList.add('active');
+
+            // Add active to clicked tab
+            event.target.classList.add('active');
+        }
+
+        function drawCards() {
+            const spreadType = document.getElementById('spreadType').value;
+            let cardCount = 1;
+            let positions = ['Card'];
+
+            if (spreadType === 'three') {
+                cardCount = 3;
+                positions = ['Past', 'Present', 'Future'];
+            } else if (spreadType === 'relationship') {
+                cardCount = 7;
+                positions = ['Your Energy', 'Their Energy', 'Connection', 'Challenges', 'Strengths', 'Hidden Influences', 'Guidance'];
+            }
+
+            // Draw random cards
+            const drawnCards = [];
+            for (let i = 0; i < cardCount; i++) {
+                const randomCard = tarotCards[Math.floor(Math.random() * tarotCards.length)];
+                drawnCards.push({
+                    ...randomCard,
+                    position: positions[i]
+                });
+            }
+
+            // Display cards
+            displayCards(drawnCards);
+
+            // Save to history
+            saveReading(spreadType, drawnCards);
+        }
+
+        function displayCards(cards) {
+            const display = document.getElementById('cardsDisplay');
+            display.innerHTML = '';
+
+            cards.forEach(card => {
+                const cardHTML = `
+                    <div class="card">
+                        <h3>${card.position}: ${card.name}</h3>
+                        <div class="card-guidance">
+                            <div class="guidance-section">
+                                <strong>💫 What This Card Teaches You:</strong>
+                                <p>${card.teaching}</p>
+                            </div>
+                            <div class="guidance-section">
+                                <strong>🎯 Actionable Advice:</strong>
+                                <p>${card.advice}</p>
+                            </div>
+                            <div class="guidance-section">
+                                <strong>⚠️ What to Watch Out For:</strong>
+                                <p>${card.warning}</p>
+                            </div>
+                            <div class="guidance-section">
+                                <strong>✨ Affirmation:</strong>
+                                <p>${card.affirmation}</p>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                display.innerHTML += cardHTML;
+            });
+        }
+
+        function saveReading(spreadType, cards) {
+            const reading = {
+                date: new Date().toLocaleString(),
+                spreadType: spreadType,
+                cards: cards
+            };
+
+            readingHistory.push(reading);
+            localStorage.setItem('readingHistory', JSON.stringify(readingHistory));
+            updateHistory();
+        }
+
+        function updateHistory() {
+            const historyList = document.getElementById('historyList');
+
+            if (readingHistory.length === 0) {
+                historyList.innerHTML = '<p>No readings yet. Draw your first cards!</p>';
+                return;
+            }
+
+            historyList.innerHTML = '<h3>Your Readings:</h3>';
+            readingHistory.reverse().forEach((reading, index) => {
+                const cardNames = reading.cards.map(c => c.name).join(', ');
+                historyList.innerHTML += `
+                    <div style="background: #f5f5f5; padding: 15px; margin: 10px 0; border-radius: 8px;">
+                        <strong>${reading.date}</strong><br>
+                        Spread: ${reading.spreadType}<br>
+                        Cards: ${cardNames}
+                    </div>
+                `;
+            });
+        }
+
+        // Load history on page load
+        const savedHistory = localStorage.getItem('readingHistory');
+        if (savedHistory) {
+            readingHistory = JSON.parse(savedHistory);
+        }
     </script>
 </body>
 </html>
