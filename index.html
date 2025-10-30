@@ -602,268 +602,251 @@
             </div>
         </div>
     </div>
+<script>
+    // User Database
+    const users = [
+        {
+            username: 'admin',
+            password: 'admin123',
+            role: 'admin',
+            plan: 'unlimited'
+        },
+        {
+            username: 'user',
+            password: 'user123',
+            role: 'user',
+            plan: 'free'
+        },
+        {
+            username: 'premium',
+            password: 'premium123',
+            role: 'user',
+            plan: '5draw',
+            drawsRemaining: 3
+        },
+        {
+            username: 'unlimited',
+            password: 'unlimited123',
+            role: 'user',
+            plan: 'unlimited'
+        }
+    ];
 
-    <script>
-        // User Database
-        const users = [
-            {
-                username: 'admin',
-                password: 'admin123',
-                role: 'admin',
-                plan: 'unlimited'
-            },
-            {
-                username: 'user',
-                password: 'user123',
-                role: 'user',
-                plan: 'free'
-            },
-            {
-                username: 'premium',
-                password: 'premium123',
-                role: 'user',
-                plan: '5draw',
-                drawsRemaining: 3
-            },
-            {
-                username: 'unlimited',
-                password: 'unlimited123',
-                role: 'user',
-                plan: 'unlimited'
-            }
-        ];
+    // Tarot Cards Database
+    const tarotCards = [
+        // ... (same as before)
+    ];
 
-        // Tarot Cards Database
-        const tarotCards = [
-            {
-                name: 'The Fool',
-                teaching: 'The Fool represents new beginnings and taking a leap of faith. You stand at the precipice of an exciting journey with infinite potential.',
-                advice: 'Take that first step. Start the project, make the call, book the trip. Trust your instincts and embrace spontaneity.',
-                warning: 'Avoid recklessness. While spontaneity is valuable, don't ignore practical concerns. Balance enthusiasm with basic preparation.',
-                affirmation: 'I embrace new beginnings with courage and wisdom.'
-            },
-            {
-                name: 'The Magician',
-                teaching: 'You possess all the tools needed to manifest your desires. The Magician represents your power to transform ideas into reality.',
-                advice: 'Use your skills strategically. Set clear intentions and take concrete steps. Your manifestation power is strong now.',
-                warning: 'Beware of manipulation or using your skills selfishly. Ensure your manifestations align with your highest good.',
-                affirmation: 'I have all the resources I need to manifest my desires.'
-            },
-            {
-                name: 'The High Priestess',
-                teaching: 'Trust your intuition and inner wisdom. The High Priestess guides you to listen to your inner voice and honor your mysteries.',
-                advice: 'Spend time in meditation and reflection. Pay attention to dreams and synchronicities. Your intuition is heightened.',
-                warning: 'Don't let mystery become secrecy or avoidance. Balance intuition with action when the time is right.',
-                affirmation: 'I trust my intuition and honor my inner wisdom.'
-            },
-            {
-                name: 'The Empress',
-                teaching: 'Abundance, creativity, and nurturing energy flow through you. The Empress represents fertility in all forms.',
-                advice: 'Create beauty, nurture projects and relationships, connect with nature. This is a highly creative and abundant time.',
-                warning: 'Avoid overindulgence or smothering others with care. Balance nurturing with allowing independence.',
-                affirmation: 'I am abundant, creative, and naturally nurturing.'
-            },
-            {
-                name: 'The Sun',
-                teaching: 'Joy, success, and vitality shine upon you. The Sun brings clarity, optimism, and positive outcomes.',
-                advice: 'Celebrate your successes. Share your light with others. Embrace childlike joy and playfulness.',
-                warning: 'Don't let success make you arrogant. Remember those who helped you along the way.',
-                affirmation: 'I radiate joy, success, and positive energy.'
-            }
-        ];
+    let currentUser = null;
+    let readingHistory = [];
 
-        let currentUser = null;
-        let readingHistory = [];
+    // Load reading history from localStorage
+    function loadHistory() {
+        const savedHistory = localStorage.getItem('readingHistory');
+        readingHistory = savedHistory ? JSON.parse(savedHistory) : [];
+    }
+    loadHistory();
 
-        // Login Handler
-        document.addEventListener('DOMContentLoaded', function() {
-            const loginForm = document.getElementById('loginForm');
+    // Login Handler
+    document.addEventListener('DOMContentLoaded', function() {
+        const loginForm = document.getElementById('loginForm');
 
-            if (loginForm) {
-                loginForm.addEventListener('submit', function(e) {
-                    e.preventDefault();
-                    handleLogin();
-                });
-            }
-
-            // Check if already logged in
-            const savedUser = localStorage.getItem('currentUser');
-            if (savedUser) {
-                currentUser = JSON.parse(savedUser);
-                showApp();
-            }
-        });
-
-        function handleLogin() {
-            const username = document.getElementById('username').value.trim();
-            const password = document.getElementById('password').value.trim();
-            const errorMsg = document.getElementById('errorMsg');
-            const successMsg = document.getElementById('successMsg');
-
-            // Reset messages
-            errorMsg.style.display = 'none';
-            successMsg.style.display = 'none';
-
-            // Find user
-            const user = users.find(u => u.username === username && u.password === password);
-
-            if (user) {
-                // Success
-                currentUser = user;
-                localStorage.setItem('currentUser', JSON.stringify(user));
-
-                successMsg.textContent = 'Login successful! Loading app...';
-                successMsg.style.display = 'block';
-
-                setTimeout(() => {
-                    showApp();
-                }, 500);
-            } else {
-                // Failed
-                errorMsg.textContent = 'Invalid username or password. Please try again.';
-                errorMsg.style.display = 'block';
-            }
+        if (loginForm) {
+            loginForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                handleLogin();
+            });
         }
 
-        function showApp() {
-            document.getElementById('loginPage').style.display = 'none';
-            document.getElementById('appContainer').style.display = 'block';
-
-            // Update user display
-            const userDisplay = document.getElementById('userDisplay');
-            let statusIcon = '👤';
-            if (currentUser.role === 'admin') statusIcon = '🔑';
-            else if (currentUser.plan === 'unlimited') statusIcon = '🔥';
-            else if (currentUser.plan === '5draw') statusIcon = '🎫';
-
-            userDisplay.textContent = `${statusIcon} ${currentUser.username}`;
-        }
-
-        function logout() {
-            localStorage.removeItem('currentUser');
-            currentUser = null;
-            document.getElementById('appContainer').style.display = 'none';
+        // Check if already logged in
+        const savedUser = localStorage.getItem('currentUser');
+        if (savedUser) {
+            currentUser = JSON.parse(savedUser);
+            showApp();
+        } else {
             document.getElementById('loginPage').style.display = 'flex';
-            document.getElementById('username').value = '';
-            document.getElementById('password').value = '';
+            document.getElementById('appContainer').style.display = 'none';
+        }
+        updateHistory();
+    });
+
+    function handleLogin() {
+        const username = document.getElementById('username').value.trim();
+        const password = document.getElementById('password').value.trim();
+        const errorMsg = document.getElementById('errorMsg');
+        const successMsg = document.getElementById('successMsg');
+
+        // Reset messages
+        errorMsg.style.display = 'none';
+        successMsg.style.display = 'none';
+
+        // Find user
+        const user = users.find(u => u.username === username && u.password === password);
+
+        if (user) {
+            // Success
+            currentUser = user;
+            localStorage.setItem('currentUser', JSON.stringify(user));
+
+            successMsg.textContent = 'Login successful! Loading app...';
+            successMsg.style.display = 'block';
+
+            setTimeout(() => {
+                showApp();
+            }, 500);
+        } else {
+            // Failed
+            errorMsg.textContent = 'Invalid username or password. Please try again.';
+            errorMsg.style.display = 'block';
+        }
+    }
+
+    function showApp() {
+        document.getElementById('loginPage').style.display = 'none';
+        document.getElementById('appContainer').style.display = 'block';
+
+        // Update user display
+        const userDisplay = document.getElementById('userDisplay');
+        let statusIcon = '👤';
+        if (currentUser.role === 'admin') statusIcon = '🔑';
+        else if (currentUser.plan === 'unlimited') statusIcon = '🔥';
+        else if (currentUser.plan === '5draw') statusIcon = '🎫';
+
+        userDisplay.textContent = `${statusIcon} ${currentUser.username}`;
+
+        updateHistory();
+    }
+
+    function logout() {
+        localStorage.removeItem('currentUser');
+        currentUser = null;
+        document.getElementById('appContainer').style.display = 'none';
+        document.getElementById('loginPage').style.display = 'flex';
+        document.getElementById('username').value = '';
+        document.getElementById('password').value = '';
+    }
+
+    function showSection(sectionName) {
+        // Hide all sections
+        const sections = document.querySelectorAll('.section');
+        sections.forEach(s => s.classList.remove('active'));
+
+        // Remove active from all tabs
+        const tabs = document.querySelectorAll('.nav-tab');
+        tabs.forEach(t => t.classList.remove('active'));
+
+        // Show selected section
+        document.getElementById(sectionName).classList.add('active');
+
+        // Add active to clicked tab
+        // Use event only if available
+        if (window.event && window.event.target) {
+            window.event.target.classList.add('active');
+        } else {
+            // Fallback: activate tab by section name
+            tabs.forEach(tab => {
+                if (tab.textContent.includes(sectionName.charAt(0).toUpperCase() + sectionName.slice(1))) {
+                    tab.classList.add('active');
+                }
+            });
+        }
+    }
+
+    function drawCards() {
+        const spreadType = document.getElementById('spreadType').value;
+        let cardCount = 1;
+        let positions = ['Card'];
+
+        if (spreadType === 'three') {
+            cardCount = 3;
+            positions = ['Past', 'Present', 'Future'];
+        } else if (spreadType === 'relationship') {
+            cardCount = 7;
+            positions = ['Your Energy', 'Their Energy', 'Connection', 'Challenges', 'Strengths', 'Hidden Influences', 'Guidance'];
         }
 
-        function showSection(sectionName) {
-            // Hide all sections
-            const sections = document.querySelectorAll('.section');
-            sections.forEach(s => s.classList.remove('active'));
-
-            // Remove active from all tabs
-            const tabs = document.querySelectorAll('.nav-tab');
-            tabs.forEach(t => t.classList.remove('active'));
-
-            // Show selected section
-            document.getElementById(sectionName).classList.add('active');
-
-            // Add active to clicked tab
-            event.target.classList.add('active');
+        // Draw random cards
+        const drawnCards = [];
+        for (let i = 0; i < cardCount; i++) {
+            const randomCard = tarotCards[Math.floor(Math.random() * tarotCards.length)];
+            drawnCards.push({
+                ...randomCard,
+                position: positions[i]
+            });
         }
 
-        function drawCards() {
-            const spreadType = document.getElementById('spreadType').value;
-            let cardCount = 1;
-            let positions = ['Card'];
+        // Display cards
+        displayCards(drawnCards);
 
-            if (spreadType === 'three') {
-                cardCount = 3;
-                positions = ['Past', 'Present', 'Future'];
-            } else if (spreadType === 'relationship') {
-                cardCount = 7;
-                positions = ['Your Energy', 'Their Energy', 'Connection', 'Challenges', 'Strengths', 'Hidden Influences', 'Guidance'];
-            }
+        // Save to history
+        saveReading(spreadType, drawnCards);
+    }
 
-            // Draw random cards
-            const drawnCards = [];
-            for (let i = 0; i < cardCount; i++) {
-                const randomCard = tarotCards[Math.floor(Math.random() * tarotCards.length)];
-                drawnCards.push({
-                    ...randomCard,
-                    position: positions[i]
-                });
-            }
+    function displayCards(cards) {
+        const display = document.getElementById('cardsDisplay');
+        display.innerHTML = '';
 
-            // Display cards
-            displayCards(drawnCards);
-
-            // Save to history
-            saveReading(spreadType, drawnCards);
-        }
-
-        function displayCards(cards) {
-            const display = document.getElementById('cardsDisplay');
-            display.innerHTML = '';
-
-            cards.forEach(card => {
-                const cardHTML = `
-                    <div class="card">
-                        <h3>${card.position}: ${card.name}</h3>
-                        <div class="card-guidance">
-                            <div class="guidance-section">
-                                <strong>💫 What This Card Teaches You:</strong>
-                                <p>${card.teaching}</p>
-                            </div>
-                            <div class="guidance-section">
-                                <strong>🎯 Actionable Advice:</strong>
-                                <p>${card.advice}</p>
-                            </div>
-                            <div class="guidance-section">
-                                <strong>⚠️ What to Watch Out For:</strong>
-                                <p>${card.warning}</p>
-                            </div>
-                            <div class="guidance-section">
-                                <strong>✨ Affirmation:</strong>
-                                <p>${card.affirmation}</p>
-                            </div>
+        cards.forEach(card => {
+            const cardHTML = `
+                <div class="card">
+                    <h3>${card.position}: ${card.name}</h3>
+                    <div class="card-guidance">
+                        <div class="guidance-section">
+                            <strong>💫 What This Card Teaches You:</strong>
+                            <p>${card.teaching}</p>
+                        </div>
+                        <div class="guidance-section">
+                            <strong>🎯 Actionable Advice:</strong>
+                            <p>${card.advice}</p>
+                        </div>
+                        <div class="guidance-section">
+                            <strong>⚠️ What to Watch Out For:</strong>
+                            <p>${card.warning}</p>
+                        </div>
+                        <div class="guidance-section">
+                            <strong>✨ Affirmation:</strong>
+                            <p>${card.affirmation}</p>
                         </div>
                     </div>
-                `;
-                display.innerHTML += cardHTML;
-            });
+                </div>
+            `;
+            display.innerHTML += cardHTML;
+        });
+    }
+
+    function saveReading(spreadType, cards) {
+        const reading = {
+            date: new Date().toLocaleString(),
+            spreadType: spreadType,
+            cards: cards
+        };
+
+        readingHistory.push(reading);
+        localStorage.setItem('readingHistory', JSON.stringify(readingHistory));
+        updateHistory();
+    }
+
+    function updateHistory() {
+        const historyList = document.getElementById('historyList');
+
+        if (readingHistory.length === 0) {
+            historyList.innerHTML = '<p>No readings yet. Draw your first cards!</p>';
+            return;
         }
 
-        function saveReading(spreadType, cards) {
-            const reading = {
-                date: new Date().toLocaleString(),
-                spreadType: spreadType,
-                cards: cards
-            };
-
-            readingHistory.push(reading);
-            localStorage.setItem('readingHistory', JSON.stringify(readingHistory));
-            updateHistory();
-        }
-
-        function updateHistory() {
-            const historyList = document.getElementById('historyList');
-
-            if (readingHistory.length === 0) {
-                historyList.innerHTML = '<p>No readings yet. Draw your first cards!</p>';
-                return;
-            }
-
-            historyList.innerHTML = '<h3>Your Readings:</h3>';
-            readingHistory.reverse().forEach((reading, index) => {
-                const cardNames = reading.cards.map(c => c.name).join(', ');
-                historyList.innerHTML += `
-                    <div style="background: #f5f5f5; padding: 15px; margin: 10px 0; border-radius: 8px;">
-                        <strong>${reading.date}</strong><br>
-                        Spread: ${reading.spreadType}<br>
-                        Cards: ${cardNames}
-                    </div>
-                `;
-            });
-        }
-
-        // Load history on page load
-        const savedHistory = localStorage.getItem('readingHistory');
-        if (savedHistory) {
-            readingHistory = JSON.parse(savedHistory);
-        }
-    </script>
+        historyList.innerHTML = '<h3>Your Readings:</h3>';
+        // Show most recent first
+        [...readingHistory].reverse().forEach((reading, index) => {
+            const cardNames = reading.cards.map(c => c.name).join(', ');
+            historyList.innerHTML += `
+                <div style="background: #f5f5f5; padding: 15px; margin: 10px 0; border-radius: 8px;">
+                    <strong>${reading.date}</strong><br>
+                    Spread: ${reading.spreadType}<br>
+                    Cards: ${cardNames}
+                </div>
+            `;
+        });
+    }
+</script>
 </body>
 </html>
